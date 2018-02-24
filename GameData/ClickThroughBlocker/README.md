@@ -14,20 +14,27 @@ Each call first calls the original method (ie: ClickThruBlocker.GUILayoutWindow 
 the position of the mouse is checked to see if it was on top of the window Rect, if it is, it then locks the controls so that clicks don't
 pass through to any other window.
 
-Functions - Identical to the GUI and GUILayout versions
-	Rect Window(int id, Rect screenRect, GUI.WindowFunction func, GUIContent content, GUIStyle style, params GUILayoutOption[] options);
-	Rect Window(int id, Rect screenRect, GUI.WindowFunction func, Texture image, GUIStyle style, params GUILayoutOption[] options);
-	Rect Window(int id, Rect screenRect, GUI.WindowFunction func, string text, GUIStyle style, params GUILayoutOption[] options);
-	Rect Window(int id, Rect screenRect, GUI.WindowFunction func, GUIContent content, params GUILayoutOption[] options);
-	Rect Window(int id, Rect screenRect, GUI.WindowFunction func, Texture image, params GUILayoutOption[] options);
-	Rect Window(int id, Rect screenRect, GUI.WindowFunction func, string text, params GUILayoutOption[] options);
+Usage
 
-	Rect Window(int id, Rect clientRect, WindowFunction func, Texture image, GUIStyle style);
-	Rect Window(int id, Rect clientRect, WindowFunction func, string text, GUIStyle style);
-	Rect Window(int id, Rect clientRect, WindowFunction func, GUIContent content);
-	Rect Window(int id, Rect clientRect, WindowFunction func, Texture image);
-	Rect Window(int id, Rect clientRect, WindowFunction func, string text);
-	Rect Window(int id, Rect clientRect, WindowFunction func, GUIContent title, GUIStyle style);
+	Add the following to the top of the source:
+		using ClickThroughFix;
+	Replace calls to GUILayout.Window with ClickThruBlocker.GUILayoutWindow
+	Replace calls to GUI.Window with ClickThruBlocker.GUIWindow
+
+Functions - Identical to the GUI and GUILayout versions
+	Rect GUILayoutWindow(int id, Rect screenRect, GUI.WindowFunction func, GUIContent content, GUIStyle style, params GUILayoutOption[] options);
+	Rect GUILayoutWindow(int id, Rect screenRect, GUI.WindowFunction func, Texture image, GUIStyle style, params GUILayoutOption[] options);
+	Rect GUILayoutWindow(int id, Rect screenRect, GUI.WindowFunction func, string text, GUIStyle style, params GUILayoutOption[] options);
+	Rect GUILayoutWindow(int id, Rect screenRect, GUI.WindowFunction func, GUIContent content, params GUILayoutOption[] options);
+	Rect GUILayoutWindow(int id, Rect screenRect, GUI.WindowFunction func, Texture image, params GUILayoutOption[] options);
+	Rect GUILayoutWindow(int id, Rect screenRect, GUI.WindowFunction func, string text, params GUILayoutOption[] options);
+
+	Rect GUIWindow(int id, Rect clientRect, WindowFunction func, Texture image, GUIStyle style);
+	Rect GUIWindow(int id, Rect clientRect, WindowFunction func, string text, GUIStyle style);
+	Rect GUIWindow(int id, Rect clientRect, WindowFunction func, GUIContent content);
+	Rect GUIWindow(int id, Rect clientRect, WindowFunction func, Texture image);
+	Rect GUIWindow(int id, Rect clientRect, WindowFunction func, string text);
+	Rect GUIWindow(int id, Rect clientRect, WindowFunction func, GUIContent title, GUIStyle style);
 
 Additional functions
 

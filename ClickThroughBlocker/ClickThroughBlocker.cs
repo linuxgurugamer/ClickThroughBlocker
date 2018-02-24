@@ -8,18 +8,22 @@ namespace ClickThroughFix
 
     public static class ClickThruBlocker
     {
+
+        internal static Dictionary<int, CTBWin> winList = new Dictionary<int, CTBWin>();
+
         // Most of this is from JanitorsCloset, ImportExportSelect.cs
 
         public class CTBWin
         {
             //public Rect rect;
-            int id;
+            internal int id;
 
             internal bool weLockedEditorInputs = false;
             internal bool weLockedFlightInputs = false;
             internal string windowName;
             internal string lockName;
             internal long lastLockCycle;
+            internal double lastUpdated = 0;
 
 
             public CTBWin(int id, Rect screenRect, string winName, string lockName)
@@ -27,7 +31,7 @@ namespace ClickThroughFix
                 this.id = id;
                 this.windowName = winName;
                 this.lockName = lockName;
-
+                lastUpdated = Planetarium.GetUniversalTime();
             }
 
             public void SetLockString(string s)
@@ -88,7 +92,7 @@ namespace ClickThroughFix
                 }
             }
 
-            private void OnDestroy()
+            internal void OnDestroy()
             {
                 Log.Info("ClickThruBlocker: OnDestroy");
                 winList.Remove(id);
@@ -105,7 +109,6 @@ namespace ClickThroughFix
             }
         }
 
-        internal static Dictionary<int, CTBWin> winList = new Dictionary<int, CTBWin>();
 
         private static Rect UpdateList(int id, Rect rect, string text)
         {
@@ -120,7 +123,7 @@ namespace ClickThroughFix
                 win.PreventEditorClickthrough(rect);
             if (HighLogic.LoadedSceneIsFlight || HighLogic.LoadedSceneHasPlanetarium)
                 win.PreventInFlightClickthrough(rect);
-
+            win.lastUpdated = Planetarium.GetUniversalTime();
             return rect;
         }     
     

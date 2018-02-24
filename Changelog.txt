@@ -1,0 +1,6 @@
+
+0.1.1
+	Fixed bug where closing a window while the mouse was over the window would lock the UI; for example, if a window has an X button to close. Thanks to forum user @keldion for finding this and pointing it out
+
+0.1.0
+	Initial release

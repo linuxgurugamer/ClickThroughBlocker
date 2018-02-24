@@ -7,7 +7,7 @@
     <ProjectGuid>{98F60AB0-2D4D-479D-A77D-B2555934D443}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ClickThroughFix</RootNamespace>
+    <RootNamespace>ClickThroughBlocker</RootNamespace>
     <AssemblyName>ClickThroughBlocker</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -52,6 +52,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AssemblyVersion.tt</DependentUpon>
     </Compile>
+    <Compile Include="CBTMonitor.cs" />
     <Compile Include="ClickThroughBlocker.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
