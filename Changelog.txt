@@ -1,3 +1,5 @@
+0.1.1.1
+	Changed Log class to internal, so it won't interfere with other code compiles
 
 0.1.1
 	Fixed bug where closing a window while the mouse was over the window would lock the UI; for example, if a window has an X button to close. Thanks to forum user @keldion for finding this and pointing it out

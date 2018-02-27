@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace ClickThroughFix
 {
-    public static class Log
+    internal static class Log
     {
         public enum LEVEL
         {
