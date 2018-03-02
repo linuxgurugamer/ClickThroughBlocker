@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Collections.Generic;
 using UnityEngine;
+using KSP.UI.Screens;
 
 
 namespace ClickThroughFix
@@ -44,6 +45,9 @@ namespace ClickThroughFix
                 return   rect.Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y));
             }
 
+            internal static int activeBlockerCnt = 0;
+            internal static List<Part> selectedParts = null;
+
             //Lifted this more or less directly from the Kerbal Engineer source. Thanks cybutek!
             internal void PreventEditorClickthrough(Rect r)
             {
@@ -56,6 +60,8 @@ namespace ClickThroughFix
                         Log.Info("ClickThruBlocker: PreventEditorClickthrough, locking on window: " + windowName);
                         EditorLogic.fetch.Lock(true, true, true, lockName);
                         weLockedEditorInputs = true;
+                        activeBlockerCnt++;
+                        selectedParts = EditorActionGroups.Instance.GetSelectedParts();
                     }
                     lastLockCycle = OnGUILoopCount.GetOnGUICnt(); 
                    
@@ -64,6 +70,7 @@ namespace ClickThroughFix
                 Log.Info("ClickThruBlocker: PreventEditorClickthrough, unlocking on window: " + windowName);
                 EditorLogic.fetch.Unlock(lockName);
                 weLockedEditorInputs = false;
+                activeBlockerCnt--;
             }
 
             // Following lifted from MechJeb
@@ -100,6 +107,7 @@ namespace ClickThroughFix
                 {
                     EditorLogic.fetch.Unlock(lockName);
                     weLockedEditorInputs = false;
+                    activeBlockerCnt--;
                 }
                 if (weLockedFlightInputs)
                 {
@@ -222,6 +230,7 @@ namespace ClickThroughFix
                         {
                             EditorLogic.fetch.Unlock(win.lockName);
                             win.weLockedEditorInputs = false;
+                            ClickThruBlocker.CTBWin.activeBlockerCnt--;
                         }
                         if (win.weLockedFlightInputs)
                         {
