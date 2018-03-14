@@ -1,7 +1,9 @@
 ﻿using System.Reflection;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using KSP.UI.Screens;
+using UnityEngine.EventSystems;
 
 
 namespace ClickThroughFix
@@ -194,6 +196,176 @@ namespace ClickThroughFix
             Rect r = GUI.Window(id, clientRect, func, title, style);
             return UpdateList(id, r, title.ToString());
         }
+
+
+#if false
+
+        static bool fieldHasFocus()
+        {
+            GameObject obj;
+            bool inputFieldIsFocused;
+            // First check for a text field ???
+            // Ignore keystrokes when a text field has focus (e.g. part search, craft title box)
+            obj = EventSystem.current.currentSelectedGameObject;
+            inputFieldIsFocused = (obj != null && obj.GetComponent<InputField>() != null && obj.GetComponent<InputField>().isFocused);
+            //if (inputFieldIsFocused)
+                //return false;
+
+            //inputFieldIsFocused = (inputObj != null && inputObj.GetComponent<InputField>() != null && inputObj.GetComponent<InputField>().isFocused);
+
+            return inputFieldIsFocused;
+        }
+
+        // GUI.TextArea
+        public static string GUITextArea(Rect position, string text)
+        {
+            string t = text;
+            text = GUI.TextArea(position, text);
+            if (!fieldHasFocus())
+                return t;
+            return text;
+        }
+
+        public static string GUITextArea(Rect position, string text, int maxLength)
+        {
+            string t = text;
+            text = GUI.TextArea(position, text, maxLength);
+            if (!fieldHasFocus())
+                return t;
+            return text;
+        }
+
+        public static string GUITextArea(Rect position, string text, GUIStyle style)
+        {
+            string t = text;
+            text = GUI.TextArea(position, text, style);
+            if (!fieldHasFocus())
+                return t;
+            return text;
+        }
+
+        public static string GUITextArea(Rect position, string text, int maxLength, GUIStyle style)
+        {
+            string t = text;
+            text = GUI.TextArea(position, text, maxLength, style);
+            if (!fieldHasFocus())
+                return t;
+            return text;
+        }
+
+        // GUI.TextField
+        public static string GUITextField(Rect position, string text, GUIStyle style)
+        {
+            string t = text;
+            text = GUI.TextField(position, text, style);
+            if (!fieldHasFocus())
+                return t;
+            return text;
+        }
+
+        public static string GUITextField(Rect position, string text, int maxLength)
+        {
+            string t = text;
+            text = GUI.TextField(position, text, maxLength);
+            if (!fieldHasFocus())
+                return t;
+            return text;
+        }
+
+        public static string GUITextField(Rect position, string text)
+        {
+            string t = text;
+            text = GUI.TextField(position, text);
+            if (!fieldHasFocus())
+                return t;
+            return text;
+        }
+
+        public static string GUITextField(Rect position, string text, int maxLength, GUIStyle style)
+        {
+            string t = text;
+            text = GUI.TextField(position, text, maxLength, style);
+            if (!fieldHasFocus())
+                return t;
+            return text;
+        }
+
+        // GUILayout.TextArea
+
+        public static string GUILayoutTextArea(string text, int maxLength, GUIStyle style, params GUILayoutOption[] options)
+        {
+            string t = text;
+            text = GUILayout.TextArea(text, maxLength, style, options);
+            if (!fieldHasFocus())
+                return t;
+            return text;
+        }
+
+        public static string GUILayoutTextArea(string text, GUIStyle style, params GUILayoutOption[] options)
+        {
+            string t = text;
+            text = GUILayout.TextArea(text, style, options);
+            if (!fieldHasFocus())
+                return t;
+            return text;
+        }
+
+        public static string GUILayoutTextArea(string text, int maxLength, params GUILayoutOption[] options)
+        {
+            string t = text;
+            text = GUILayout.TextArea(text, maxLength, options);
+            if (!fieldHasFocus())
+                return t;
+            return text;
+        }
+
+        public static string GUILayoutTextArea(string text, params GUILayoutOption[] options)
+        {
+            string t = text;
+            text = GUILayout.TextArea(text, options);
+            if (!fieldHasFocus())
+                return t;
+            return text;
+        }
+
+        // GUILayout.TextField
+
+        public static string GUILayoutTextField(string text, int maxLength, GUIStyle style, params GUILayoutOption[] options)
+        {
+            string t = text;
+            text = GUILayout.TextField(text, maxLength, style, options);
+            if (!fieldHasFocus())
+                return t;
+            return text;
+        }
+
+        public static string GUILayoutTextField(string text, GUIStyle style, params GUILayoutOption[] options)
+        {
+            string t = text;
+            text = GUILayout.TextField(text, style, options);
+            if (!fieldHasFocus())
+                return t;
+            return text;
+        }
+
+        public static string GUILayoutTextField(string text, int maxLength, params GUILayoutOption[] options)
+        {
+            string t = text;
+            text = GUILayout.TextField(text, maxLength, options);
+            if (!fieldHasFocus())
+                return t;
+            return text;
+        }
+
+        public static string GUILayoutTextField(string text, params GUILayoutOption[] options)
+        {
+            string t = text;
+            text = GUILayout.TextField(text, options);
+            if (!fieldHasFocus())
+                return t;
+            return text;
+        }
+#endif
     }
 
     [KSPAddon(KSPAddon.Startup.Flight, true)]
