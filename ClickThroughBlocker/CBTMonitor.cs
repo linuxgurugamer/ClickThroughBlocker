@@ -34,15 +34,17 @@ namespace ClickThroughFix
                         if (selector != null)
                             selector.Deselect();
                     }
-                    
-                    EditorActionGroups.Instance.ClearSelection(true);
-                    for (int i = 0; i < ClickThruBlocker.CTBWin.selectedParts.Count; i++)
+
+                    if (EditorActionGroups.Instance != null)
                     {
-                        EditorActionPartSelector selector = ClickThruBlocker.CTBWin.selectedParts[i].GetComponent<EditorActionPartSelector>();
-                        if (selector != null)
-                            EditorActionGroups.Instance.AddToSelection(selector);
+                        EditorActionGroups.Instance.ClearSelection(true);
+                        for (int i = 0; i < ClickThruBlocker.CTBWin.selectedParts.Count; i++)
+                        {
+                            EditorActionPartSelector selector = ClickThruBlocker.CTBWin.selectedParts[i].GetComponent<EditorActionPartSelector>();
+                            if (selector != null)
+                                EditorActionGroups.Instance.AddToSelection(selector);
+                        }
                     }
-                    
                 }
             }
         }
