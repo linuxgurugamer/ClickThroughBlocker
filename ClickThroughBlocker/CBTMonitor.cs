@@ -48,14 +48,17 @@ namespace ClickThroughFix
                 }
             }
         }
+
+        static internal long timeTics = 0;
         void LateUpdate()
         {
             int d = 0;
             ClickThruBlocker.CTBWin win = null;
 
+            timeTics++;
             foreach (var w in  ClickThruBlocker.winList)
             {
-                if (w.Value.lastUpdated + 0.05 < Planetarium.GetUniversalTime())
+                if (w.Value.lastUpdated+4  < timeTics ) //+ 0.05 < Planetarium.GetUniversalTime())
                 {
                     d = w.Key;
                     win = w.Value;

@@ -17,7 +17,7 @@ namespace ClickThroughFix
             DETAIL = 4,
             TRACE = 5
         };
-        static string PREFIX = "ClickThroughBlocker";
+        static string PREFIX = "ClickThroughBlocker: ";
 
         public static void setTitle(string t)
         {

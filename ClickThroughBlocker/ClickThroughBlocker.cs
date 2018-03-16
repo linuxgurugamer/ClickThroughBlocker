@@ -34,7 +34,7 @@ namespace ClickThroughFix
                 this.id = id;
                 this.windowName = winName;
                 this.lockName = lockName;
-                lastUpdated = Planetarium.GetUniversalTime();
+                lastUpdated = CBTMonitor.timeTics; // Planetarium.GetUniversalTime();
             }
 
             public void SetLockString(string s)
@@ -53,23 +53,24 @@ namespace ClickThroughFix
             //Lifted this more or less directly from the Kerbal Engineer source. Thanks cybutek!
             internal void PreventEditorClickthrough(Rect r)
             {
-                Log.Info("ClickThruBlocker: PreventEditorClickthrough");
+                //Log.Info("ClickThruBlocker: PreventEditorClickthrough");
                 bool mouseOverWindow = MouseIsOverWindow(r);
+                Log.Info("PreventEditorClickthrough, mouseOverWindow: " + mouseOverWindow);
                 if (mouseOverWindow)
                 {
                     if (!weLockedEditorInputs)
                     {
-                        Log.Info("ClickThruBlocker: PreventEditorClickthrough, locking on window: " + windowName);
+                        Log.Info("PreventEditorClickthrough, locking on window: " + windowName);
                         EditorLogic.fetch.Lock(true, true, true, lockName);
                         weLockedEditorInputs = true;
                         activeBlockerCnt++;
                         selectedParts = EditorActionGroups.Instance.GetSelectedParts();
                     }
-                    lastLockCycle = OnGUILoopCount.GetOnGUICnt(); 
-                   
+                    lastLockCycle = OnGUILoopCount.GetOnGUICnt();
+                    return;
                 }
-                if (!weLockedEditorInputs || mouseOverWindow) return;
-                Log.Info("ClickThruBlocker: PreventEditorClickthrough, unlocking on window: " + windowName);
+                if (!weLockedEditorInputs) return;
+                Log.Info("PreventEditorClickthrough, unlocking on window: " + windowName);
                 EditorLogic.fetch.Unlock(lockName);
                 weLockedEditorInputs = false;
                 activeBlockerCnt--;
@@ -103,7 +104,7 @@ namespace ClickThroughFix
 
             internal void OnDestroy()
             {
-                Log.Info("ClickThruBlocker: OnDestroy");
+                Log.Info("ClickThruBlocker: OnDestroy, windowName: " + windowName + ", lockName: " + lockName);
                 winList.Remove(id);
                 if (weLockedEditorInputs)
                 {
@@ -133,7 +134,7 @@ namespace ClickThroughFix
                 win.PreventEditorClickthrough(rect);
             if (HighLogic.LoadedSceneIsFlight || HighLogic.LoadedSceneHasPlanetarium)
                 win.PreventInFlightClickthrough(rect);
-            win.lastUpdated = Planetarium.GetUniversalTime();
+            win.lastUpdated = CBTMonitor.timeTics; // Planetarium.GetUniversalTime();
             return rect;
         }     
     
