@@ -85,7 +85,7 @@ namespace ClickThroughFix
                 {
                     if (!weLockedFlightInputs && !Input.GetMouseButton(1))
                     {
-                        Log.Info("ClickThruBlocker: PreventInFlightClickthrough, locking on window: " + windowName); ;
+                        Log.Info("PreventInFlightClickthrough, locking on window: " + windowName); ;
 
                         InputLockManager.SetControlLock(ControlTypes.ALLBUTCAMERAS, lockName);
                         weLockedFlightInputs = true;
@@ -96,7 +96,7 @@ namespace ClickThroughFix
                 }
                 if (weLockedFlightInputs && !mouseOverWindow)
                 {
-                    Log.Info("ClickThruBlocker: PreventInFlightClickthrough, unlocking on window: " + windowName);
+                    Log.Info("PreventInFlightClickthrough, unlocking on window: " + windowName);
                     InputLockManager.RemoveControlLock(lockName);
                     weLockedFlightInputs = false;
                 }
@@ -104,17 +104,23 @@ namespace ClickThroughFix
 
             internal void OnDestroy()
             {
-                Log.Info("ClickThruBlocker: OnDestroy, windowName: " + windowName + ", lockName: " + lockName);
+                Log.Info("OnDestroy, windowName: " + windowName + ", lockName: " + lockName + ", weLockedEditorInputs: " + weLockedEditorInputs.ToString() +
+                    ",  weLockedFlightInputs: " + weLockedFlightInputs.ToString());
                 winList.Remove(id);
+                if (HighLogic.LoadedSceneIsEditor)
+                    EditorLogic.fetch.Unlock(lockName);
+                else
+                    InputLockManager.RemoveControlLock(lockName);
+
                 if (weLockedEditorInputs)
                 {
-                    EditorLogic.fetch.Unlock(lockName);
+                    //EditorLogic.fetch.Unlock(lockName);
                     weLockedEditorInputs = false;
                     activeBlockerCnt--;
                 }
                 if (weLockedFlightInputs)
                 {
-                    InputLockManager.RemoveControlLock(lockName);
+                    //InputLockManager.RemoveControlLock(lockName);
                     weLockedFlightInputs = false;
                 }
             }
