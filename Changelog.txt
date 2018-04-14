@@ -1,3 +1,8 @@
+0.1.6.2
+	Added:
+	[assembly: KSPAssembly("ToolbarController", 1, 0)]
+	to assemblyinfo to allow other mods to check the load order
+
 0.1.6.1
 	Updated version to allow all 1.4.*
 
