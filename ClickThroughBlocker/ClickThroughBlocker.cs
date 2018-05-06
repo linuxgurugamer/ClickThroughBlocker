@@ -55,12 +55,12 @@ namespace ClickThroughFix
             {
                 //Log.Info("ClickThruBlocker: PreventEditorClickthrough");
                 bool mouseOverWindow = MouseIsOverWindow(r);
-                Log.Info("PreventEditorClickthrough, mouseOverWindow: " + mouseOverWindow);
+                //Log.Info("PreventEditorClickthrough, mouseOverWindow: " + mouseOverWindow);
                 if (mouseOverWindow)
                 {
                     if (!weLockedEditorInputs)
                     {
-                        Log.Info("PreventEditorClickthrough, locking on window: " + windowName);
+                        //Log.Info("PreventEditorClickthrough, locking on window: " + windowName);
                         EditorLogic.fetch.Lock(true, true, true, lockName);
                         weLockedEditorInputs = true;
                         activeBlockerCnt++;
@@ -70,7 +70,7 @@ namespace ClickThroughFix
                     return;
                 }
                 if (!weLockedEditorInputs) return;
-                Log.Info("PreventEditorClickthrough, unlocking on window: " + windowName);
+                //Log.Info("PreventEditorClickthrough, unlocking on window: " + windowName);
                 EditorLogic.fetch.Unlock(lockName);
                 weLockedEditorInputs = false;
                 activeBlockerCnt--;
@@ -85,7 +85,7 @@ namespace ClickThroughFix
                 {
                     if (!weLockedFlightInputs && !Input.GetMouseButton(1))
                     {
-                        Log.Info("PreventInFlightClickthrough, locking on window: " + windowName); ;
+                        //Log.Info("PreventInFlightClickthrough, locking on window: " + windowName); ;
 
                         InputLockManager.SetControlLock(ControlTypes.ALLBUTCAMERAS, lockName);
                         weLockedFlightInputs = true;
@@ -96,7 +96,7 @@ namespace ClickThroughFix
                 }
                 if (weLockedFlightInputs && !mouseOverWindow)
                 {
-                    Log.Info("PreventInFlightClickthrough, unlocking on window: " + windowName);
+                    //Log.Info("PreventInFlightClickthrough, unlocking on window: " + windowName);
                     InputLockManager.RemoveControlLock(lockName);
                     weLockedFlightInputs = false;
                 }
@@ -104,8 +104,8 @@ namespace ClickThroughFix
 
             internal void OnDestroy()
             {
-                Log.Info("OnDestroy, windowName: " + windowName + ", lockName: " + lockName + ", weLockedEditorInputs: " + weLockedEditorInputs.ToString() +
-                    ",  weLockedFlightInputs: " + weLockedFlightInputs.ToString());
+                //Log.Info("OnDestroy, windowName: " + windowName + ", lockName: " + lockName + ", weLockedEditorInputs: " + weLockedEditorInputs.ToString() +
+                //    ",  weLockedFlightInputs: " + weLockedFlightInputs.ToString());
                 winList.Remove(id);
                 if (HighLogic.LoadedSceneIsEditor)
                     EditorLogic.fetch.Unlock(lockName);

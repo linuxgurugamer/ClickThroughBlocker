@@ -1,3 +1,7 @@
+0.1.6.3
+	Added an additional check to the CBTMonitor for null refs
+	Reversed order of loops in CBTMonitor for efficiency
+
 0.1.6.2
 	Added:
 	[assembly: KSPAssembly("ToolbarController", 1, 0)]
