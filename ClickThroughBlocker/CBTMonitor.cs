@@ -21,26 +21,24 @@ namespace ClickThroughFix
         // the mouse moved over a protected window
         void Update()
         {
-
-            if (HighLogic.LoadedSceneIsEditor && EditorLogic.fetch != null && EditorLogic.fetch.ship != null && EditorLogic.fetch.ship.Parts != null)
+            if (HighLogic.LoadedSceneIsEditor )
             {
+                
                 if (ClickThruBlocker.CTBWin.activeBlockerCnt > 0)
                 {
-                    //Log.Info("Setting Mouse.HoveredPart to null & deselecting all parts");
+                    Log.Info("Setting Mouse.HoveredPart to null & deselecting all parts");
                     Mouse.HoveredPart = null;
-                    //for (int i = 0; i < EditorLogic.fetch.ship.Parts.Count; i++)
-                    for (int i = EditorLogic.fetch.ship.Parts.Count - 1; i >= 0; i-- )
+                    for (int i = 0; i < EditorLogic.fetch.ship.Parts.Count; i++)
                     {
                         EditorActionPartSelector selector = EditorLogic.fetch.ship.Parts[i].GetComponent<EditorActionPartSelector>();
                         if (selector != null)
                             selector.Deselect();
                     }
 
-                    if (EditorActionGroups.Instance != null && ClickThruBlocker.CTBWin.selectedParts != null)
+                    if (EditorActionGroups.Instance != null)
                     {
                         EditorActionGroups.Instance.ClearSelection(true);
-                        //for (int i = 0; i < ClickThruBlocker.CTBWin.selectedParts.Count; i++)
-                        for (int i = ClickThruBlocker.CTBWin.selectedParts.Count - 1; i >= 0; i--)
+                        for (int i = 0; i < ClickThruBlocker.CTBWin.selectedParts.Count; i++)
                         {
                             EditorActionPartSelector selector = ClickThruBlocker.CTBWin.selectedParts[i].GetComponent<EditorActionPartSelector>();
                             if (selector != null)

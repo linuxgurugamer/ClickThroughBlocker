@@ -23,7 +23,7 @@ rem    but not always
 rem LICENSE is the license file
 rem README is the readme file
 
-set GAMEDIR=ClickThroughBlocker
+set GAMEDIR=000_ClickThroughBlocker
 set GAMEDATA="GameData\"
 set VERSIONFILE=%GAMEDIR%.version
 set LICENSE=License.md
