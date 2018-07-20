@@ -1,4 +1,7 @@
-0.1.6.4
+0.1.6.6
+	Did some minor runtime optimizations
+
+0.1.6.6
 	Changed directory name to 000_ClickThroughBlocker
 
 0.1.6.3

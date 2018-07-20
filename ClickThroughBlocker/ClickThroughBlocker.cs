@@ -42,9 +42,12 @@ namespace ClickThroughFix
                 this.lockName = s;
             }
 
+            static Vector2 mousePos = new Vector2();
             public static bool MouseIsOverWindow(Rect rect)
             {
-                return   rect.Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y));
+                mousePos.x = Input.mousePosition.x;
+                mousePos.y = Screen.height - Input.mousePosition.y;
+                return rect.Contains(mousePos);
             }
 
             internal static int activeBlockerCnt = 0;
@@ -126,10 +129,11 @@ namespace ClickThroughFix
             }
         }
 
-
+        // This is outside the UpdateList method for runtime optimization 
+        static CTBWin win = null;
         private static Rect UpdateList(int id, Rect rect, string text)
         {
-            CTBWin win = null;
+            win = null;
             if (!winList.TryGetValue(id, out win))
             {
                 win = new CTBWin(id, rect, text, text);
@@ -142,65 +146,63 @@ namespace ClickThroughFix
                 win.PreventInFlightClickthrough(rect);
             win.lastUpdated = CBTMonitor.timeTics; // Planetarium.GetUniversalTime();
             return rect;
-        }     
-    
+        }
+
+        // This is outside all the GuiLayoutWindow methods for runtime optimization
+        static Rect r;
         public static Rect GUILayoutWindow(int id, Rect screenRect, GUI.WindowFunction func, string text, GUIStyle style, params GUILayoutOption[] options)
         {
-            Rect r = GUILayout.Window(id, screenRect, func, text, style, options);
-
+            r = GUILayout.Window(id, screenRect, func, text, style, options);
             return UpdateList(id, r, text); 
         }
 
         public static Rect GUILayoutWindow(int id, Rect screenRect, GUI.WindowFunction func, string text, params GUILayoutOption[] options)
         {
-            Rect r = GUILayout.Window(id, screenRect, func, text, options);
-
+            r = GUILayout.Window(id, screenRect, func, text, options);
             return UpdateList(id, r, text);
         }
 
         public static Rect GUILayoutWindow(int id, Rect screenRect, GUI.WindowFunction func, GUIContent content, params GUILayoutOption[] options)
         {
-            Rect r = GUILayout.Window(id, screenRect, func, content, options);
-
+            r = GUILayout.Window(id, screenRect, func, content, options);
             return UpdateList(id, r, id.ToString());
         }
 
         public static Rect GUILayoutWindow(int id, Rect screenRect, GUI.WindowFunction func, Texture image, params GUILayoutOption[] options)
         {
-            Rect r = GUILayout.Window(id, screenRect, func, image, options);
-
+            r = GUILayout.Window(id, screenRect, func, image, options);
             return UpdateList(id, r, id.ToString());
         }
 
         public static Rect GUIWindow(int id, Rect clientRect, GUI.WindowFunction func, Texture image, GUIStyle style)
         {
-            Rect r = GUI.Window(id, clientRect, func, image, style);
+            r = GUI.Window(id, clientRect, func, image, style);
             return UpdateList(id, r, id.ToString());
 
         }
         public static Rect GUIWindow(int id, Rect clientRect, GUI.WindowFunction func, string text, GUIStyle style)
         {
-            Rect r = GUI.Window(id, clientRect, func, text, style);
+            r = GUI.Window(id, clientRect, func, text, style);
             return UpdateList(id, r, text);
         }
         public static Rect GUIWindow(int id, Rect clientRect, GUI.WindowFunction func, GUIContent content)
         {
-            Rect r = GUI.Window(id, clientRect, func, content);
+            r = GUI.Window(id, clientRect, func, content);
             return UpdateList(id, r, id.ToString());
         }
         public static Rect GUIWindow(int id, Rect clientRect, GUI.WindowFunction func, Texture image)
         {
-            Rect r = GUI.Window(id, clientRect, func, image);
+            r = GUI.Window(id, clientRect, func, image);
             return UpdateList(id, r, id.ToString());
         }
         public static Rect GUIWindow(int id, Rect clientRect, GUI.WindowFunction func, string text)
         {
-            Rect r = GUI.Window(id, clientRect, func, text);
+            r = GUI.Window(id, clientRect, func, text);
             return UpdateList(id, r, text);
         }
         public static Rect GUIWindow(int id, Rect clientRect, GUI.WindowFunction func, GUIContent title, GUIStyle style)
         {
-            Rect r = GUI.Window(id, clientRect, func, title, style);
+            r = GUI.Window(id, clientRect, func, title, style);
             return UpdateList(id, r, title.ToString());
         }
 
@@ -390,20 +392,17 @@ namespace ClickThroughFix
             DontDestroyOnLoad(this);
             InvokeRepeating("DoGuiCounter",5.0f, 0.25f);
         }
-        private void OnDestroy()
-        {
 
-        }
+        long lastonGuiCnt;
         private void DoGuiCounter()
         {
-            long lastonGuiCnt = (onguiCnt++) - 1;
+            lastonGuiCnt = (onguiCnt++) - 1;
 
-            //for (int i = 0; i < ClickThruBlocker.winList.Count; i++)
             foreach (var win in ClickThruBlocker.winList.Values)
             {
                 if (win.lastLockCycle < lastonGuiCnt)
                 {
-                    Log.Info("lastonGuiCnt: " + lastonGuiCnt + "lastLockCycle: " + win.lastLockCycle);
+                    //Log.Info("lastonGuiCnt: " + lastonGuiCnt + "lastLockCycle: " + win.lastLockCycle);
                     {
                         if (win.weLockedEditorInputs)
                         {
@@ -422,5 +421,4 @@ namespace ClickThroughFix
 
         }
     }
-
 }

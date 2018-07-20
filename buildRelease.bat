@@ -25,7 +25,7 @@ rem README is the readme file
 
 set GAMEDIR=000_ClickThroughBlocker
 set GAMEDATA="GameData\"
-set VERSIONFILE=%GAMEDIR%.version
+set VERSIONFILE=ClickThroughBlocker.version
 set LICENSE=License.md
 set README=ReadMe.md
 

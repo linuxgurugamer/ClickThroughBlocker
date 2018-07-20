@@ -26,9 +26,11 @@ namespace ClickThroughFix
                 
                 if (ClickThruBlocker.CTBWin.activeBlockerCnt > 0)
                 {
-                    Log.Info("Setting Mouse.HoveredPart to null & deselecting all parts");
+                    //Log.Info("Setting Mouse.HoveredPart to null & deselecting all parts");
                     Mouse.HoveredPart = null;
-                    for (int i = 0; i < EditorLogic.fetch.ship.Parts.Count; i++)
+
+                    for (int i = EditorLogic.fetch.ship.Parts.Count; i >= 0; i--)
+                    //for (int i = 0; i < EditorLogic.fetch.ship.Parts.Count; i++)
                     {
                         EditorActionPartSelector selector = EditorLogic.fetch.ship.Parts[i].GetComponent<EditorActionPartSelector>();
                         if (selector != null)
@@ -38,7 +40,8 @@ namespace ClickThroughFix
                     if (EditorActionGroups.Instance != null)
                     {
                         EditorActionGroups.Instance.ClearSelection(true);
-                        for (int i = 0; i < ClickThruBlocker.CTBWin.selectedParts.Count; i++)
+                        for (int i = ClickThruBlocker.CTBWin.selectedParts.Count; i>= 0; i--)
+                        //for (int i = 0; i < ClickThruBlocker.CTBWin.selectedParts.Count; i++)
                         {
                             EditorActionPartSelector selector = ClickThruBlocker.CTBWin.selectedParts[i].GetComponent<EditorActionPartSelector>();
                             if (selector != null)
@@ -50,12 +53,14 @@ namespace ClickThroughFix
         }
 
         static internal long timeTics = 0;
+        int d;
         void LateUpdate()
         {
-            int d = 0;
+            d = 0;
             ClickThruBlocker.CTBWin win = null;
 
             timeTics++;
+
             foreach (var w in  ClickThruBlocker.winList)
             {
                 if (w.Value.lastUpdated+4  < timeTics ) //+ 0.05 < Planetarium.GetUniversalTime())
