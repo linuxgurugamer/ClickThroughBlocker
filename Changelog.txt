@@ -1,3 +1,6 @@
+0.1.6.7
+	Fixed ArgumentOutOfRangeException in Update
+
 0.1.6.6
 	Did some minor runtime optimizations
 

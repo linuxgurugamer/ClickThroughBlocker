@@ -25,9 +25,24 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release, dummy|AnyCPU'">
+    <OutputPath>bin\Release, dummy\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dummy|AnyCPU'">
+    <OutputPath>bin\Dummy\</OutputPath>
+    <DefineConstants>DUMMY</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AssemblyVersion.cs">
@@ -73,8 +88,14 @@
     <PostBuildEvent>
 
 start /D D:\Users\jbb\github\ClickThroughBlocker /WAIT deploy.bat  $(TargetDir) $(TargetFileName)
+
+
 if $(ConfigurationName) == Release (
+
+
+
 	start /D D:\Users\jbb\github\ClickThroughBlocker /WAIT buildRelease.bat $(TargetDir) $(TargetFileName)
+
 )</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>

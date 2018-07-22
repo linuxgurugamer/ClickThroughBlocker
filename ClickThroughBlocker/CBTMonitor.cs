@@ -1,10 +1,12 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
 using KSP.UI.Screens;
 
+#if !DUMMY
 namespace ClickThroughFix
 {
     [KSPAddon(KSPAddon.Startup.SpaceCentre, true)]
@@ -29,7 +31,7 @@ namespace ClickThroughFix
                     //Log.Info("Setting Mouse.HoveredPart to null & deselecting all parts");
                     Mouse.HoveredPart = null;
 
-                    for (int i = EditorLogic.fetch.ship.Parts.Count; i >= 0; i--)
+                    for (int i = EditorLogic.fetch.ship.Parts.Count - 1; i >= 0; i--)
                     //for (int i = 0; i < EditorLogic.fetch.ship.Parts.Count; i++)
                     {
                         EditorActionPartSelector selector = EditorLogic.fetch.ship.Parts[i].GetComponent<EditorActionPartSelector>();
@@ -40,7 +42,7 @@ namespace ClickThroughFix
                     if (EditorActionGroups.Instance != null)
                     {
                         EditorActionGroups.Instance.ClearSelection(true);
-                        for (int i = ClickThruBlocker.CTBWin.selectedParts.Count; i>= 0; i--)
+                        for (int i = ClickThruBlocker.CTBWin.selectedParts.Count - 1; i>= 0; i--)
                         //for (int i = 0; i < ClickThruBlocker.CTBWin.selectedParts.Count; i++)
                         {
                             EditorActionPartSelector selector = ClickThruBlocker.CTBWin.selectedParts[i].GetComponent<EditorActionPartSelector>();
@@ -77,3 +79,4 @@ namespace ClickThroughFix
         }
     }
 }
+#endif
