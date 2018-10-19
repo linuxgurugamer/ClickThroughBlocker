@@ -1,6 +1,6 @@
 {
     "NAME": "ClickThroughBlocker",
-    "URL": "http://ksp-avc.cybutek.net/version.php?id=546",
+    "URL": "http://ksp.spacetux.net/avc/ClickThroughBlocker",
     "DOWNLOAD": "https://github.com/linuxgurugamer/ClickThroughBlocker/releases",
     "GITHUB": {
         "USERNAME": "linuxgurugamer",
@@ -10,7 +10,7 @@
         "MAJOR": 0,
         "MINOR": 1,
         "PATCH": 6,
-        "BUILD": 8
+        "BUILD": 9
     },
     "KSP_VERSION": {
         "MAJOR": 1,
