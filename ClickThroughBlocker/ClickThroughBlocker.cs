@@ -94,7 +94,7 @@ namespace ClickThroughFix
                 bool mouseOverWindow = MouseIsOverWindow(r);
                 if (mouseOverWindow)
                 {
-                    if (!weLockedFlightInputs && !Input.GetMouseButton(1))
+                    if (!weLockedFlightInputs && !Input.GetMouseButton(1) && lockName != null)
                     {
                         //Log.Info("PreventInFlightClickthrough, locking on window: " + windowName); ;
 
@@ -105,7 +105,7 @@ namespace ClickThroughFix
                     if (weLockedFlightInputs)
                         lastLockCycle = OnGUILoopCount.GetOnGUICnt();
                 }
-                if (weLockedFlightInputs && !mouseOverWindow)
+                if (weLockedFlightInputs && !mouseOverWindow && lockName != null)
                 {
                     //Log.Info("PreventInFlightClickthrough, unlocking on window: " + windowName);
                     InputLockManager.RemoveControlLock(lockName);
@@ -120,11 +120,13 @@ namespace ClickThroughFix
                 //Log.Info("OnDestroy, windowName: " + windowName + ", lockName: " + lockName + ", weLockedEditorInputs: " + weLockedEditorInputs.ToString() +
                 //    ",  weLockedFlightInputs: " + weLockedFlightInputs.ToString());
                 winList.Remove(id);
-                if (HighLogic.LoadedSceneIsEditor)
-                    EditorLogic.fetch.Unlock(lockName);
-                else
-                    InputLockManager.RemoveControlLock(lockName);
-
+                if (lockName != null)
+                {
+                    if (HighLogic.LoadedSceneIsEditor)
+                        EditorLogic.fetch.Unlock(lockName);
+                    else
+                        InputLockManager.RemoveControlLock(lockName);
+                }
                 if (weLockedEditorInputs)
                 {
                     //EditorLogic.fetch.Unlock(lockName);
@@ -434,7 +436,7 @@ namespace ClickThroughFix
                             win.weLockedEditorInputs = false;
                             ClickThruBlocker.CTBWin.activeBlockerCnt--;
                         }
-                        if (win.weLockedFlightInputs)
+                        if (win.weLockedFlightInputs && win.lockName != null)
                         {
                             InputLockManager.RemoveControlLock(win.lockName);
                             win.weLockedFlightInputs = false;

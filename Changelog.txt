@@ -1,3 +1,6 @@
+0.1.7
+	Fixed ArgumentNullException: Argument cannot be null when moving mouse over dropdown menu (in the ksp_toolbar)
+
 0.1.6.9
 	Version bump to fix .version file
 
