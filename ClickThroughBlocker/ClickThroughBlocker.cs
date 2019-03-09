@@ -62,6 +62,8 @@ namespace ClickThroughFix
 #if DUMMY
                 return;
 #else
+                if (lockName == null)
+                    return;
                 //Log.Info("ClickThruBlocker: PreventEditorClickthrough");
                 bool mouseOverWindow = MouseIsOverWindow(r);
                 //Log.Info("PreventEditorClickthrough, mouseOverWindow: " + mouseOverWindow);
