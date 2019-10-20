@@ -1,3 +1,19 @@
+0.1.9.0
+	Rebuild for 1.8.0
+
+0.1.7.2
+	Added replacements for the following functions:
+	Unity GUI:
+		public static Rect ModalWindow (int id, Rect clientRect, UnityEngine.GUI.WindowFunction func, string text);
+        public static Rect ModalWindow (int id, Rect clientRect, UnityEngine.GUI.WindowFunction func, Texture image);
+		public static Rect ModalWindow (int id, Rect clientRect, UnityEngine.GUI.WindowFunction func, GUIContent content);
+        public static Rect ModalWindow (int id, Rect clientRect, UnityEngine.GUI.WindowFunction func, string text, GUIStyle style);
+        public static Rect ModalWindow (int id, Rect clientRect, UnityEngine.GUI.WindowFunction func, Texture image, GUIStyle style);
+        public static Rect ModalWindow (int id, Rect clientRect, UnityEngine.GUI.WindowFunction func, GUIContent content, GUIStyle style);
+	Unity GuiLayout:
+		public static Rect Window (int id, Rect screenRect, UnityEngine.GUI.WindowFunction func, Texture image, GUIStyle style, params GUILayoutOption[] options);
+		public static Rect Window (int id, Rect screenRect, UnityEngine.GUI.WindowFunction func, GUIContent content, GUIStyle style, params GUILayoutOption[] options);
+
 0.1.7.1
 	Fixed ArgumentNullException: Argument cannot be null when moving mouse over dropdown menu (in the ksp_toolbar) when in the editor 
 		(previous fix was for all other scenes)

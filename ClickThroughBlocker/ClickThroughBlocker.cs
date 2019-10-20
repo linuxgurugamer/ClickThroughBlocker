@@ -102,7 +102,7 @@ namespace ClickThroughFix
 
                         InputLockManager.SetControlLock(ControlTypes.ALLBUTCAMERAS, lockName);
                         weLockedFlightInputs = true;
-                       
+
                     }
                     if (weLockedFlightInputs)
                         lastLockCycle = OnGUILoopCount.GetOnGUICnt();
@@ -144,8 +144,8 @@ namespace ClickThroughFix
             }
         }
 #endif
-            // This is outside the UpdateList method for runtime optimization 
-            static CTBWin win = null;
+        // This is outside the UpdateList method for runtime optimization 
+        static CTBWin win = null;
         private static Rect UpdateList(int id, Rect rect, string text)
         {
 #if !DUMMY
@@ -165,74 +165,117 @@ namespace ClickThroughFix
             return rect;
         }
 
-            // This is outside all the GuiLayoutWindow methods for runtime optimization
-            static Rect r;
-            public static Rect GUILayoutWindow(int id, Rect screenRect, GUI.WindowFunction func, string text, GUIStyle style, params GUILayoutOption[] options)
-            {
-                r = GUILayout.Window(id, screenRect, func, text, style, options);
+        // This is outside all the GuiLayoutWindow methods for runtime optimization
+        static Rect r;
+        public static Rect GUILayoutWindow(int id, Rect screenRect, GUI.WindowFunction func, string text, GUIStyle style, params GUILayoutOption[] options)
+        {
+            r = GUILayout.Window(id, screenRect, func, text, style, options);
 
-            return UpdateList(id, r, text); 
-            }
+            return UpdateList(id, r, text);
+        }
 
-            public static Rect GUILayoutWindow(int id, Rect screenRect, GUI.WindowFunction func, string text, params GUILayoutOption[] options)
-            {
-                r = GUILayout.Window(id, screenRect, func, text, options);
+        public static Rect GUILayoutWindow(int id, Rect screenRect, GUI.WindowFunction func, string text, params GUILayoutOption[] options)
+        {
+            r = GUILayout.Window(id, screenRect, func, text, options);
 
-            return UpdateList(id, r, text); 
-            }
+            return UpdateList(id, r, text);
+        }
 
-            public static Rect GUILayoutWindow(int id, Rect screenRect, GUI.WindowFunction func, GUIContent content, params GUILayoutOption[] options)
-            {
-                r = GUILayout.Window(id, screenRect, func, content, options);
-
-            return UpdateList(id, r, id.ToString());
-            }
-
-            public static Rect GUILayoutWindow(int id, Rect screenRect, GUI.WindowFunction func, Texture image, params GUILayoutOption[] options)
-            {
-                r = GUILayout.Window(id, screenRect, func, image, options);
+        public static Rect GUILayoutWindow(int id, Rect screenRect, GUI.WindowFunction func, GUIContent content, params GUILayoutOption[] options)
+        {
+            r = GUILayout.Window(id, screenRect, func, content, options);
 
             return UpdateList(id, r, id.ToString());
-            }
+        }
 
-            public static Rect GUIWindow(int id, Rect clientRect, GUI.WindowFunction func, Texture image, GUIStyle style)
-            {
-                r = GUI.Window(id, clientRect, func, image, style);
+        public static Rect GUILayoutWindow(int id, Rect screenRect, GUI.WindowFunction func, Texture image, params GUILayoutOption[] options)
+        {
+            r = GUILayout.Window(id, screenRect, func, image, options);
 
-                return UpdateList(id, r, id.ToString());
-            }
-            public static Rect GUIWindow(int id, Rect clientRect, GUI.WindowFunction func, string text, GUIStyle style)
-            {
-                r = GUI.Window(id, clientRect, func, text, style);
+            return UpdateList(id, r, id.ToString());
+        }
 
-                return UpdateList(id, r, text);
-            }
-            public static Rect GUIWindow(int id, Rect clientRect, GUI.WindowFunction func, GUIContent content)
-            {
-                r = GUI.Window(id, clientRect, func, content);
+        public static Rect GUIWindow(int id, Rect clientRect, GUI.WindowFunction func, Texture image, GUIStyle style)
+        {
+            r = GUI.Window(id, clientRect, func, image, style);
 
-                return UpdateList(id, r, id.ToString());
+            return UpdateList(id, r, id.ToString());
+        }
+        public static Rect GUIWindow(int id, Rect clientRect, GUI.WindowFunction func, string text, GUIStyle style)
+        {
+            r = GUI.Window(id, clientRect, func, text, style);
 
-            }
-            public static Rect GUIWindow(int id, Rect clientRect, GUI.WindowFunction func, Texture image)
-            {
-                r = GUI.Window(id, clientRect, func, image);
+            return UpdateList(id, r, text);
+        }
+        public static Rect GUIWindow(int id, Rect clientRect, GUI.WindowFunction func, GUIContent content)
+        {
+            r = GUI.Window(id, clientRect, func, content);
 
-                return UpdateList(id, r, id.ToString());
+            return UpdateList(id, r, id.ToString());
 
-            }
-            public static Rect GUIWindow(int id, Rect clientRect, GUI.WindowFunction func, string text)
-            {
-                r = GUI.Window(id, clientRect, func, text);
+        }
+        public static Rect GUIWindow(int id, Rect clientRect, GUI.WindowFunction func, Texture image)
+        {
+            r = GUI.Window(id, clientRect, func, image);
 
-                return UpdateList(id, r, text);
-            }
-            public static Rect GUIWindow(int id, Rect clientRect, GUI.WindowFunction func, GUIContent title, GUIStyle style)
-            {
-                r = GUI.Window(id, clientRect, func, title, style);
+            return UpdateList(id, r, id.ToString());
 
-                return UpdateList(id, r, title.ToString());
-            }
+        }
+        public static Rect GUIWindow(int id, Rect clientRect, GUI.WindowFunction func, string text)
+        {
+            r = GUI.Window(id, clientRect, func, text);
+
+            return UpdateList(id, r, text);
+        }
+        public static Rect GUIWindow(int id, Rect clientRect, GUI.WindowFunction func, GUIContent title, GUIStyle style)
+        {
+            r = GUI.Window(id, clientRect, func, title, style);
+
+            return UpdateList(id, r, title.ToString());
+        }
+
+        public static Rect GUILayoutWindow(int id, Rect screenRect, UnityEngine.GUI.WindowFunction func, Texture image, GUIStyle style, params GUILayoutOption[] options)
+        {
+            r = GUILayout.Window(id, screenRect, func, image, style, options);
+            return UpdateList(id, r, id.ToString());
+        }
+        public static Rect GUILayoutWindow(int id, Rect screenRect, UnityEngine.GUI.WindowFunction func, GUIContent content, GUIStyle style, params GUILayoutOption[] options)
+        {
+            r = GUILayout.Window( id,  screenRect,  func,  content,  style,  options);
+            return UpdateList(id, r, id.ToString());
+        }
+
+        public static Rect GUIModalWindow(int id, Rect clientRect, UnityEngine.GUI.WindowFunction func, string text)
+        {
+            r = GUI.ModalWindow(id, clientRect, func, text);
+            return UpdateList(id, r, id.ToString());
+        }
+        public static Rect GUIModalWindow(int id, Rect clientRect, UnityEngine.GUI.WindowFunction func, Texture image)
+        {
+            r = GUI.ModalWindow(id, clientRect, func, image);
+            return UpdateList(id, r, id.ToString());
+        }
+        public static Rect GUIModalWindow(int id, Rect clientRect, UnityEngine.GUI.WindowFunction func, GUIContent content)
+        {
+            r = GUI.ModalWindow(id, clientRect, func, content);
+            return UpdateList(id, r, id.ToString());
+        }
+        public static Rect GUIModalWindow(int id, Rect clientRect, UnityEngine.GUI.WindowFunction func, string text, GUIStyle style)
+        {
+            r = GUI.ModalWindow(id, clientRect, func, text, style);
+            return UpdateList(id, r, id.ToString());
+        }
+        public static Rect GUIModalWindow(int id, Rect clientRect, UnityEngine.GUI.WindowFunction func, Texture image, GUIStyle style)
+        {
+            r = GUI.ModalWindow(id, clientRect, func, image, style);
+            return UpdateList(id, r, id.ToString());
+        }
+        public static Rect GUIModalWindow(int id, Rect clientRect, UnityEngine.GUI.WindowFunction func, GUIContent content, GUIStyle style)
+        {
+            r = GUI.ModalWindow( id,  clientRect,  func,  content,  style);
+            return UpdateList(id, r, id.ToString());
+        }
+
 
 
 #if false
@@ -403,9 +446,9 @@ namespace ClickThroughFix
             return text;
         }
 #endif
-        }
+    }
 #if !DUMMY
-        [KSPAddon(KSPAddon.Startup.Flight, true)]
+    [KSPAddon(KSPAddon.Startup.Flight, true)]
     internal class OnGUILoopCount : MonoBehaviour
     {
         static long onguiCnt = 0;
@@ -418,7 +461,7 @@ namespace ClickThroughFix
         private void Start()
         {
             DontDestroyOnLoad(this);
-            InvokeRepeating("DoGuiCounter",5.0f, 0.25f);
+            InvokeRepeating("DoGuiCounter", 5.0f, 0.25f);
         }
 
         long lastonGuiCnt;
