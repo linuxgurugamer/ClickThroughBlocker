@@ -1,5 +1,8 @@
 ChangeLog
 
+0.1.9.4
+	Fixed nullref which occurred with CRASH
+
 0.1.9.3
 	Really did the MiniAVC update
 
