@@ -62,7 +62,7 @@ namespace ClickThroughFix
 #if DUMMY
                 return;
 #else
-                if (lockName == null)
+                if (lockName == null || EditorLogic.fetch == null)
                     return;
                 //Log.Info("ClickThruBlocker: PreventEditorClickthrough");
                 bool mouseOverWindow = MouseIsOverWindow(r);
@@ -129,7 +129,7 @@ namespace ClickThroughFix
                     else
                         InputLockManager.RemoveControlLock(lockName);
                 }
-                if (weLockedEditorInputs)
+                if (EditorLogic.fetch != null && weLockedEditorInputs)
                 {
                     //EditorLogic.fetch.Unlock(lockName);
                     weLockedEditorInputs = false;
@@ -475,7 +475,7 @@ namespace ClickThroughFix
                 {
                     //Log.Info("lastonGuiCnt: " + lastonGuiCnt + "lastLockCycle: " + win.lastLockCycle);
                     {
-                        if (win.weLockedEditorInputs)
+                        if (if (EditorLogic.fetch != null && win.weLockedEditorInputs)
                         {
                             EditorLogic.fetch.Unlock(win.lockName);
                             win.weLockedEditorInputs = false;
