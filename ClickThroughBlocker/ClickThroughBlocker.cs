@@ -475,7 +475,7 @@ namespace ClickThroughFix
                 {
                     //Log.Info("lastonGuiCnt: " + lastonGuiCnt + "lastLockCycle: " + win.lastLockCycle);
                     {
-                        if (if (EditorLogic.fetch != null && win.weLockedEditorInputs)
+                        if (EditorLogic.fetch != null && win.weLockedEditorInputs)
                         {
                             EditorLogic.fetch.Unlock(win.lockName);
                             win.weLockedEditorInputs = false;
