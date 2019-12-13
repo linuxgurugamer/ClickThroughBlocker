@@ -1,5 +1,11 @@
 ChangeLog
 
+0.1.9.5
+	Fixed subtle bug where the game scene was being changed due to clicking on a mod window, which
+	prevented the variable counter: ClickThruBlocker.CTBWin.activeBlockerCnt  from being reset to 0
+	Added check for null EditorLogic.fetch in Update() method, was necessary in KSP 1.8.1 due to change
+	in initialization methods/timings
+
 0.1.9.4
 	Fixed nullref which occurred with CRASH
 	Updated AssemblyVersion.tt

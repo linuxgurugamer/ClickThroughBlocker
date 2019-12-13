@@ -15,6 +15,12 @@ namespace ClickThroughFix
         void Start()
         {
             DontDestroyOnLoad(this);
+            GameEvents.onGameSceneLoadRequested.Add(onGameSceneLoadRequested);
+        }
+
+        void onGameSceneLoadRequested(GameScenes gs)
+        {
+            ClickThruBlocker.CTBWin.activeBlockerCnt = 0;
         }
 
         // this whole mess below is to work around a stock bug.
@@ -25,12 +31,17 @@ namespace ClickThroughFix
         {
             if (HighLogic.LoadedSceneIsEditor )
             {
-                
                 if (ClickThruBlocker.CTBWin.activeBlockerCnt > 0)
                 {
                     //Log.Info("Setting Mouse.HoveredPart to null & deselecting all parts");
                     Mouse.HoveredPart = null;
-
+                    Log.Info("CBTMonitor.Update 2.1");
+                    if (EditorLogic.fetch == null)
+                    {
+                        Log.Info("EditorLogic.fetch == null");
+                        return;
+                    }
+ 
                     for (int i = EditorLogic.fetch.ship.Parts.Count - 1; i >= 0; i--)
                     //for (int i = 0; i < EditorLogic.fetch.ship.Parts.Count; i++)
                     {
@@ -51,6 +62,7 @@ namespace ClickThroughFix
                         }
                     }
                 }
+
             }
         }
 
