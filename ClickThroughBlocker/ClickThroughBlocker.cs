@@ -28,6 +28,7 @@ namespace ClickThroughFix
             internal string lockName;
             internal long lastLockCycle;
             internal double lastUpdated = 0;
+            Rect activeWindow;
 
 
             public CTBWin(int id, Rect screenRect, string winName, string lockName)
@@ -50,7 +51,7 @@ namespace ClickThroughFix
             {
                 mousePos.x = Input.mousePosition.x;
                 mousePos.y = Screen.height - Input.mousePosition.y;
-                return rect.Contains(mousePos);
+               return rect.Contains(mousePos);
             }
 #endif
             internal static int activeBlockerCnt = 0;
@@ -67,18 +68,43 @@ namespace ClickThroughFix
                 //Log.Info("ClickThruBlocker: PreventEditorClickthrough");
                 bool mouseOverWindow = MouseIsOverWindow(r);
                 //Log.Info("PreventEditorClickthrough, mouseOverWindow: " + mouseOverWindow);
-                if (mouseOverWindow)
+                if (HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick)
                 {
-                    if (!weLockedEditorInputs)
+                    bool mouseClicked = Input.GetMouseButton(0) || Input.GetMouseButton(1);
+                    if (mouseClicked)
                     {
-                        //Log.Info("PreventEditorClickthrough, locking on window: " + windowName);
-                        EditorLogic.fetch.Lock(true, true, true, lockName);
-                        weLockedEditorInputs = true;
-                        activeBlockerCnt++;
-                        selectedParts = EditorActionGroups.Instance.GetSelectedParts();
+                        if (mouseOverWindow)
+                            activeWindow = r;
+                        if (activeWindow == r)
+                        {
+                            if (!weLockedEditorInputs)
+                            {
+                                //Log.Info("PreventEditorClickthrough, locking on window: " + windowName);
+                                EditorLogic.fetch.Lock(true, true, true, lockName);
+                                weLockedEditorInputs = true;
+                                activeBlockerCnt++;
+                                selectedParts = EditorActionGroups.Instance.GetSelectedParts();
+                            }
+                            lastLockCycle = OnGUILoopCount.GetOnGUICnt();
+                            return;
+                        }
                     }
-                    lastLockCycle = OnGUILoopCount.GetOnGUICnt();
-                    return;
+                }
+                else
+                {
+                    if (mouseOverWindow)
+                    {
+                        if (!weLockedEditorInputs)
+                        {
+                            //Log.Info("PreventEditorClickthrough, locking on window: " + windowName);
+                            EditorLogic.fetch.Lock(true, true, true, lockName);
+                            weLockedEditorInputs = true;
+                            activeBlockerCnt++;
+                            selectedParts = EditorActionGroups.Instance.GetSelectedParts();
+                        }
+                        lastLockCycle = OnGUILoopCount.GetOnGUICnt();
+                        return;
+                    }
                 }
                 if (!weLockedEditorInputs) return;
                 //Log.Info("PreventEditorClickthrough, unlocking on window: " + windowName);
@@ -94,24 +120,60 @@ namespace ClickThroughFix
 #if !DUMMY
                 //Log.Info("ClickThruBlocker: PreventInFlightClickthrough");
                 bool mouseOverWindow = MouseIsOverWindow(r);
-                if (mouseOverWindow)
+                //
+                // This section for the Click to Focus option
+                //
+                if (HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick)
                 {
-                    if (!weLockedFlightInputs && !Input.GetMouseButton(1) && lockName != null)
+                    bool mouseClicked = Input.GetMouseButton(0) || Input.GetMouseButton(1);
+                    if (mouseClicked)
                     {
-                        //Log.Info("PreventInFlightClickthrough, locking on window: " + windowName); ;
+                        if (mouseOverWindow)
+                            activeWindow = r;
 
-                        InputLockManager.SetControlLock(ControlTypes.ALLBUTCAMERAS, lockName);
-                        weLockedFlightInputs = true;
+                        if (activeWindow == r)
+                        {
 
+                            if (!weLockedFlightInputs && !Input.GetMouseButton(1) && lockName != null)
+                            {
+                                InputLockManager.SetControlLock(ControlTypes.ALLBUTCAMERAS, lockName);
+                                weLockedFlightInputs = true;
+
+                            }
+                            if (weLockedFlightInputs)
+                                lastLockCycle = OnGUILoopCount.GetOnGUICnt();
+                        }
+                        if (weLockedFlightInputs && activeWindow != r && lockName != null )
+                        {
+                            InputLockManager.RemoveControlLock(lockName);
+                            weLockedFlightInputs = false;
+                        }
                     }
-                    if (weLockedFlightInputs)
-                        lastLockCycle = OnGUILoopCount.GetOnGUICnt();
                 }
-                if (weLockedFlightInputs && !mouseOverWindow && lockName != null)
+                else
                 {
-                    //Log.Info("PreventInFlightClickthrough, unlocking on window: " + windowName);
-                    InputLockManager.RemoveControlLock(lockName);
-                    weLockedFlightInputs = false;
+                    //
+                    // This section for the Focus Follows Mouse option
+                    //
+                    if (mouseOverWindow)
+                    {
+                        if (!weLockedFlightInputs && !Input.GetMouseButton(1) && lockName != null)
+                        {
+                            //Log.Info("PreventInFlightClickthrough, locking on window: " + windowName); ;
+
+                            InputLockManager.SetControlLock(ControlTypes.ALLBUTCAMERAS, lockName);
+                            weLockedFlightInputs = true;
+
+                        }
+                        if (weLockedFlightInputs)
+                            lastLockCycle = OnGUILoopCount.GetOnGUICnt();
+                    }
+                    if (weLockedFlightInputs && !mouseOverWindow && lockName != null)
+                    {
+                        //Log.Info("PreventInFlightClickthrough, unlocking on window: " + windowName);
+                        InputLockManager.RemoveControlLock(lockName);
+                        weLockedFlightInputs = false;
+                    }
                 }
 #endif
             }
