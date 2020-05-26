@@ -1,5 +1,9 @@
 ChangeLog
 
+0.1.10.1
+	Modified the CBTMonitor to not run in any scene other than the editor
+	Fixed window data not getting cleared properly
+
 0.1.10
 	Added Settings page 
 		Added new setting to specify Focus follows Click

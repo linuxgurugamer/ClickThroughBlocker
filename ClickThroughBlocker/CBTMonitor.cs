@@ -9,13 +9,15 @@ using KSP.UI.Screens;
 #if !DUMMY
 namespace ClickThroughFix
 {
-    [KSPAddon(KSPAddon.Startup.SpaceCentre, true)]
+    //[KSPAddon(KSPAddon.Startup.SpaceCentre, true)]
+    [KSPAddon(KSPAddon.Startup.EditorAny, false)]
     class CBTMonitor : MonoBehaviour
     {
         void Start()
         {
-            DontDestroyOnLoad(this);
-            GameEvents.onGameSceneLoadRequested.Add(onGameSceneLoadRequested);
+            //DontDestroyOnLoad(this);
+            // GameEvents.onGameSceneLoadRequested.Add(onGameSceneLoadRequested);
+            ClickThruBlocker.CTBWin.activeBlockerCnt = 0;
         }
 
         void onGameSceneLoadRequested(GameScenes gs)
@@ -29,13 +31,13 @@ namespace ClickThroughFix
         // the mouse moved over a protected window
         void Update()
         {
-            if (HighLogic.LoadedSceneIsEditor )
+            //if (HighLogic.LoadedSceneIsEditor )
             {
                 if (ClickThruBlocker.CTBWin.activeBlockerCnt > 0)
                 {
                     //Log.Info("Setting Mouse.HoveredPart to null & deselecting all parts");
                     Mouse.HoveredPart = null;
-                    Log.Info("CBTMonitor.Update 2.1");
+
                     if (EditorLogic.fetch == null)
                     {
                         Log.Info("EditorLogic.fetch == null");

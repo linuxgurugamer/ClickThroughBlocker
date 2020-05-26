@@ -75,6 +75,8 @@ namespace ClickThroughFix
                     {
                         if (mouseOverWindow)
                             activeWindow = r;
+                        else
+                            activeWindow = new Rect();
                         if (activeWindow == r)
                         {
                             if (!weLockedEditorInputs)
@@ -130,6 +132,8 @@ namespace ClickThroughFix
                     {
                         if (mouseOverWindow)
                             activeWindow = r;
+                        else
+                            activeWindow = new Rect();
 
                         if (activeWindow == r)
                         {
@@ -143,10 +147,13 @@ namespace ClickThroughFix
                             if (weLockedFlightInputs)
                                 lastLockCycle = OnGUILoopCount.GetOnGUICnt();
                         }
-                        if (weLockedFlightInputs && activeWindow != r && lockName != null )
+                        else
                         {
-                            InputLockManager.RemoveControlLock(lockName);
-                            weLockedFlightInputs = false;
+                            if (weLockedFlightInputs && lockName != null)
+                            {
+                                InputLockManager.RemoveControlLock(lockName);
+                                weLockedFlightInputs = false;
+                            }
                         }
                     }
                 }
@@ -529,6 +536,9 @@ namespace ClickThroughFix
         long lastonGuiCnt;
         private void DoGuiCounter()
         {
+            if (HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick)
+                return;
+
             lastonGuiCnt = (onguiCnt++) - 1;
 
             foreach (var win in ClickThruBlocker.winList.Values)
