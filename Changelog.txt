@@ -1,5 +1,18 @@
 ChangeLog
 
+0.1.10.3
+	Added MiniMod to clear input locks via toolbar button
+	Added one-time popup window 
+	Added ToolbarController as a dependency
+
+0.1.10.2 (unreleased)
+	Removed need to save window rect
+	Added Focus Follows Click mode
+	Reorganized code a bit
+	Removed some unnecessary assignments
+	Added stock settings page to support the FocusFollowsClick mode
+
+
 0.1.10.1
 	Modified the CBTMonitor to not run in any scene other than the editor
 	Fixed window data not getting cleared properly

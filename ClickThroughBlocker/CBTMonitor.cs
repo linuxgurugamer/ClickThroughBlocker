@@ -1,9 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
 using KSP.UI.Screens;
 
 #if !DUMMY
@@ -31,6 +26,9 @@ namespace ClickThroughFix
         // the mouse moved over a protected window
         void Update()
         {
+            if (HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick)
+                return;
+
             //if (HighLogic.LoadedSceneIsEditor )
             {
                 if (ClickThruBlocker.CTBWin.activeBlockerCnt > 0)
@@ -43,7 +41,7 @@ namespace ClickThroughFix
                         Log.Info("EditorLogic.fetch == null");
                         return;
                     }
- 
+
                     for (int i = EditorLogic.fetch.ship.Parts.Count - 1; i >= 0; i--)
                     //for (int i = 0; i < EditorLogic.fetch.ship.Parts.Count; i++)
                     {
@@ -55,7 +53,7 @@ namespace ClickThroughFix
                     if (EditorActionGroups.Instance != null)
                     {
                         EditorActionGroups.Instance.ClearSelection(true);
-                        for (int i = ClickThruBlocker.CTBWin.selectedParts.Count - 1; i>= 0; i--)
+                        for (int i = ClickThruBlocker.CTBWin.selectedParts.Count - 1; i >= 0; i--)
                         //for (int i = 0; i < ClickThruBlocker.CTBWin.selectedParts.Count; i++)
                         {
                             EditorActionPartSelector selector = ClickThruBlocker.CTBWin.selectedParts[i].GetComponent<EditorActionPartSelector>();
@@ -68,27 +66,31 @@ namespace ClickThroughFix
             }
         }
 
-        static internal long timeTics = 0;
+        //static internal long timeTics = 0;
         int d;
         void LateUpdate()
         {
+            if (HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick)
+                return;
+
             d = 0;
             ClickThruBlocker.CTBWin win = null;
-
-            timeTics++;
-
-            foreach (var w in  ClickThruBlocker.winList)
+            //timeTics++;
             {
-                if (w.Value.lastUpdated+4  < timeTics ) //+ 0.05 < Planetarium.GetUniversalTime())
+
+                foreach (var w in ClickThruBlocker.winList)
                 {
-                    d = w.Key;
-                    win = w.Value;
-                    break;
+                    if (w.Value.lastUpdated + 4 < CBTGlobalMonitor.globalTimeTics) //+ 0.05 < Planetarium.GetUniversalTime())
+                    {
+                        d = w.Key;
+                        win = w.Value;
+                        break;
+                    }
                 }
-            }
-            if (d  != 0)
-            {
-                win.OnDestroy();
+                if (d != 0)
+                {
+                    win.OnDestroy();
+                }
             }
         }
     }

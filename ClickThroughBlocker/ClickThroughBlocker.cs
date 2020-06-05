@@ -1,9 +1,6 @@
-﻿using System.Reflection;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using KSP.UI.Screens;
-using UnityEngine.EventSystems;
 
 
 namespace ClickThroughFix
@@ -14,6 +11,8 @@ namespace ClickThroughFix
 #if !DUMMY2
         internal static Dictionary<int, CTBWin> winList = new Dictionary<int, CTBWin>();
 #endif
+
+
         // Most of this is from JanitorsCloset, ImportExportSelect.cs
 
         public class CTBWin
@@ -28,7 +27,7 @@ namespace ClickThroughFix
             internal string lockName;
             internal long lastLockCycle;
             internal double lastUpdated = 0;
-            Rect activeWindow;
+            // Rect activeWindow;
 
 
             public CTBWin(int id, Rect screenRect, string winName, string lockName)
@@ -37,7 +36,7 @@ namespace ClickThroughFix
                 this.id = id;
                 this.windowName = winName;
                 this.lockName = lockName;
-                lastUpdated = CBTMonitor.timeTics; // Planetarium.GetUniversalTime();
+                lastUpdated = CBTGlobalMonitor.globalTimeTics; // Planetarium.GetUniversalTime();
 #endif
             }
 
@@ -51,9 +50,11 @@ namespace ClickThroughFix
             {
                 mousePos.x = Input.mousePosition.x;
                 mousePos.y = Screen.height - Input.mousePosition.y;
-               return rect.Contains(mousePos);
+                return rect.Contains(mousePos);
             }
 #endif
+
+
             internal static int activeBlockerCnt = 0;
             internal static List<Part> selectedParts = null;
 
@@ -74,22 +75,29 @@ namespace ClickThroughFix
                     if (mouseClicked)
                     {
                         if (mouseOverWindow)
-                            activeWindow = r;
-                        else
-                            activeWindow = new Rect();
-                        if (activeWindow == r)
                         {
                             if (!weLockedEditorInputs)
                             {
                                 //Log.Info("PreventEditorClickthrough, locking on window: " + windowName);
-                                EditorLogic.fetch.Lock(true, true, true, lockName);
+                                //EditorLogic.fetch.Lock(true, true, true, lockName);
+                                FocusLock.SetLock(lockName, win, 2);
                                 weLockedEditorInputs = true;
                                 activeBlockerCnt++;
                                 selectedParts = EditorActionGroups.Instance.GetSelectedParts();
                             }
-                            lastLockCycle = OnGUILoopCount.GetOnGUICnt();
+                            //lastLockCycle = OnGUILoopCount.GetOnGUICnt();
                             return;
                         }
+                        else
+                        {
+                            if (weLockedEditorInputs)
+                            {
+                                FocusLock.FreeLock(lockName, 3);
+                                weLockedEditorInputs = false;
+                                activeBlockerCnt--;
+                            }
+                        }
+
                     }
                 }
                 else
@@ -99,7 +107,8 @@ namespace ClickThroughFix
                         if (!weLockedEditorInputs)
                         {
                             //Log.Info("PreventEditorClickthrough, locking on window: " + windowName);
-                            EditorLogic.fetch.Lock(true, true, true, lockName);
+                            //EditorLogic.fetch.Lock(true, true, true, lockName);
+                            FocusLock.SetLock(lockName, win, 4);
                             weLockedEditorInputs = true;
                             activeBlockerCnt++;
                             selectedParts = EditorActionGroups.Instance.GetSelectedParts();
@@ -107,12 +116,15 @@ namespace ClickThroughFix
                         lastLockCycle = OnGUILoopCount.GetOnGUICnt();
                         return;
                     }
+
+                    if (!weLockedEditorInputs) return;
+                    //Log.Info("PreventEditorClickthrough, unlocking on window: " + windowName);
+                    //EditorLogic.fetch.Unlock(lockName);
+                    FocusLock.FreeLock(lockName, 5);
+
+                    weLockedEditorInputs = false;
+                    activeBlockerCnt--;
                 }
-                if (!weLockedEditorInputs) return;
-                //Log.Info("PreventEditorClickthrough, unlocking on window: " + windowName);
-                EditorLogic.fetch.Unlock(lockName);
-                weLockedEditorInputs = false;
-                activeBlockerCnt--;
 #endif
             }
 
@@ -131,27 +143,23 @@ namespace ClickThroughFix
                     if (mouseClicked)
                     {
                         if (mouseOverWindow)
-                            activeWindow = r;
-                        else
-                            activeWindow = new Rect();
-
-                        if (activeWindow == r)
                         {
-
+                            Log.Info("PreventInFlightClickthrough, mouse clicked and over window, weLockedFlightInputs:" + weLockedFlightInputs + ", lockName: " + lockName);
                             if (!weLockedFlightInputs && !Input.GetMouseButton(1) && lockName != null)
                             {
-                                InputLockManager.SetControlLock(ControlTypes.ALLBUTCAMERAS, lockName);
+                                //InputLockManager.SetControlLock(ControlTypes.ALLBUTCAMERAS, lockName);
+                                FocusLock.SetLock(lockName, win, 6);
                                 weLockedFlightInputs = true;
-
                             }
-                            if (weLockedFlightInputs)
-                                lastLockCycle = OnGUILoopCount.GetOnGUICnt();
                         }
                         else
                         {
+                            Log.Info("PreventInFlightClickthrough, mouse clicked and NOT over window, weLockedFlightInputs:" + weLockedFlightInputs + ", lockName: " + lockName);
+
                             if (weLockedFlightInputs && lockName != null)
                             {
-                                InputLockManager.RemoveControlLock(lockName);
+                                // InputLockManager.RemoveControlLock(lockName);
+                                FocusLock.FreeLock(lockName, 7);
                                 weLockedFlightInputs = false;
                             }
                         }
@@ -168,7 +176,8 @@ namespace ClickThroughFix
                         {
                             //Log.Info("PreventInFlightClickthrough, locking on window: " + windowName); ;
 
-                            InputLockManager.SetControlLock(ControlTypes.ALLBUTCAMERAS, lockName);
+                            //InputLockManager.SetControlLock(ControlTypes.ALLBUTCAMERAS, lockName);
+                            FocusLock.SetLock(lockName, win, 8);
                             weLockedFlightInputs = true;
 
                         }
@@ -178,7 +187,8 @@ namespace ClickThroughFix
                     if (weLockedFlightInputs && !mouseOverWindow && lockName != null)
                     {
                         //Log.Info("PreventInFlightClickthrough, unlocking on window: " + windowName);
-                        InputLockManager.RemoveControlLock(lockName);
+                        //InputLockManager.RemoveControlLock(lockName);
+                        FocusLock.FreeLock(lockName, 9);
                         weLockedFlightInputs = false;
                     }
                 }
@@ -188,8 +198,7 @@ namespace ClickThroughFix
             internal void OnDestroy()
             {
 #if !DUMMY
-                //Log.Info("OnDestroy, windowName: " + windowName + ", lockName: " + lockName + ", weLockedEditorInputs: " + weLockedEditorInputs.ToString() +
-                //    ",  weLockedFlightInputs: " + weLockedFlightInputs.ToString());
+                // Log.Info("OnDestroy, windowName: " + windowName + ", lockName: " + lockName + ", weLockedEditorInputs: " + weLockedEditorInputs.ToString() + ",  weLockedFlightInputs: " + weLockedFlightInputs.ToString());
                 winList.Remove(id);
                 if (lockName != null)
                 {
@@ -226,10 +235,15 @@ namespace ClickThroughFix
             }
 
             if (HighLogic.LoadedSceneIsEditor)
+            {
                 win.PreventEditorClickthrough(rect);
+                win.lastUpdated = CBTGlobalMonitor.globalTimeTics; // Planetarium.GetUniversalTime();
+            }
+            else
+                win.lastUpdated = CBTGlobalMonitor.globalTimeTics;
             if (HighLogic.LoadedSceneIsFlight || HighLogic.LoadedSceneHasPlanetarium)
                 win.PreventInFlightClickthrough(rect);
-            win.lastUpdated = CBTMonitor.timeTics; // Planetarium.GetUniversalTime();
+
 #endif
             return rect;
         }
@@ -310,7 +324,7 @@ namespace ClickThroughFix
         }
         public static Rect GUILayoutWindow(int id, Rect screenRect, UnityEngine.GUI.WindowFunction func, GUIContent content, GUIStyle style, params GUILayoutOption[] options)
         {
-            r = GUILayout.Window( id,  screenRect,  func,  content,  style,  options);
+            r = GUILayout.Window(id, screenRect, func, content, style, options);
             return UpdateList(id, r, id.ToString());
         }
 
@@ -341,7 +355,7 @@ namespace ClickThroughFix
         }
         public static Rect GUIModalWindow(int id, Rect clientRect, UnityEngine.GUI.WindowFunction func, GUIContent content, GUIStyle style)
         {
-            r = GUI.ModalWindow( id,  clientRect,  func,  content,  style);
+            r = GUI.ModalWindow(id, clientRect, func, content, style);
             return UpdateList(id, r, id.ToString());
         }
 
@@ -516,53 +530,4 @@ namespace ClickThroughFix
         }
 #endif
     }
-#if !DUMMY
-    [KSPAddon(KSPAddon.Startup.Flight, true)]
-    internal class OnGUILoopCount : MonoBehaviour
-    {
-        static long onguiCnt = 0;
-
-
-        internal static long GetOnGUICnt()
-        {
-            return onguiCnt;
-        }
-        private void Start()
-        {
-            DontDestroyOnLoad(this);
-            InvokeRepeating("DoGuiCounter", 5.0f, 0.25f);
-        }
-
-        long lastonGuiCnt;
-        private void DoGuiCounter()
-        {
-            if (HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick)
-                return;
-
-            lastonGuiCnt = (onguiCnt++) - 1;
-
-            foreach (var win in ClickThruBlocker.winList.Values)
-            {
-                if (win.lastLockCycle < lastonGuiCnt)
-                {
-                    //Log.Info("lastonGuiCnt: " + lastonGuiCnt + "lastLockCycle: " + win.lastLockCycle);
-                    {
-                        if (EditorLogic.fetch != null && win.weLockedEditorInputs)
-                        {
-                            EditorLogic.fetch.Unlock(win.lockName);
-                            win.weLockedEditorInputs = false;
-                            ClickThruBlocker.CTBWin.activeBlockerCnt--;
-                        }
-                        if (win.weLockedFlightInputs && win.lockName != null)
-                        {
-                            InputLockManager.RemoveControlLock(win.lockName);
-                            win.weLockedFlightInputs = false;
-                        }
-                    }
-                }
-            }
-
-        }
-    }
-#endif
 }

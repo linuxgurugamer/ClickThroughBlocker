@@ -34,11 +34,21 @@ namespace ClickThroughFix
          toolTip = "This will make it a global setting for all games")]
         public bool global = true;
 
+        [GameParameters.CustomParameterUI("Show Popup at next start",
+            toolTip = "Clearing this will allow the pop-up window to be displayed at the next game start.\nSetting it after clearing will allow the popup-window to be shown at the next start of a different save")]
+        public bool showPopup = true;
+
+
 
 
         public override bool Enabled(MemberInfo member, GameParameters parameters) { return true; }
 
-        public override bool Interactible(MemberInfo member, GameParameters parameters) { return true; }
+        public override bool Interactible(MemberInfo member, GameParameters parameters) 
+        {
+            if (showPopup)
+                OneTimePopup.RemovePopUpFlagFile();
+            return true; 
+        }
 
         public override IList ValidValues(MemberInfo member) { return null; }
 
