@@ -8,12 +8,12 @@ rem VERSIONFILE is the name of the version file, usually the same as GAMEDATA,
 rem    but not always
 
 set H=%KSPDIR%
-set H=R:\KSP_1.9.1_dev
 set GAMEDIR=000_ClickThroughBlocker
 set GAMEDATA="GameData\"
-set VERSIONFILE=%GAMEDIR%.version
+set VERSIONFILE=ClickThroughBlocker.version
 
 copy /Y "%1%2" "%GAMEDATA%\%GAMEDIR%\Plugins"
 copy /Y %VERSIONFILE% %GAMEDATA%\%GAMEDIR%
-
+copy /y changelog.cfg  %GAMEDATA%\%GAMEDIR% 
 xcopy /y /s /I %GAMEDATA%\%GAMEDIR% "%H%\GameData\%GAMEDIR%"
+

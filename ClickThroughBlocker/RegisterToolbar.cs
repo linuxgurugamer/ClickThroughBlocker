@@ -1,7 +1,13 @@
-﻿using UnityEngine;
-using ToolbarControl_NS;
+﻿using ToolbarControl_NS;
 using KSP.UI.Screens;
 using KSP.Localization;
+using System;
+using System.IO;
+
+using KSP.IO;
+using UnityEngine;
+using ClickThroughFix;
+
 
 namespace ClearAllInputLocks
 {
@@ -31,8 +37,12 @@ namespace ClearAllInputLocks
         {
             if (toolbarControl == null)
             {
+#if false
+        public void AddToAllToolbars(TC_ClickHandler onTrue, TC_ClickHandler onFalse, TC_ClickHandler onHover, TC_ClickHandler onHoverOut, TC_ClickHandler onEnable, TC_ClickHandler onDisable, ApplicationLauncher.AppScenes visibleInScenes, string nameSpace, string toolbarId, string largeToolbarIcon, string smallToolbarIcon, string toolTip = "");
+
+#endif
                 toolbarControl = gameObject.AddComponent<ToolbarControl>();
-                toolbarControl.AddToAllToolbars(ClearInputLocksToggle, ClearInputLocksToggle,
+                toolbarControl.AddToAllToolbars(null,null,
                     ApplicationLauncher.AppScenes.SPACECENTER |
                     ApplicationLauncher.AppScenes.FLIGHT |
                     ApplicationLauncher.AppScenes.MAPVIEW |
@@ -43,18 +53,26 @@ namespace ClearAllInputLocks
                     "ClearInputLocks",
                     "000_ClickThroughBlocker/PluginData/lock-38",
                     "000_ClickThroughBlocker/PluginData/lock-24",
-                    MODNAME
+                    "Clear all input locks"
                 );
+                toolbarControl.AddLeftRightClickCallbacks(ClearInputLocksToggle, CallModeWindow);
             }
         }
 
         void ClearInputLocksToggle()
         {
-            //if (!HighLogic.LoadedSceneIsEditor)
             InputLockManager.ClearControlLocks();
-            //else
-            //    EditorLogic.fetch.Unlock(lockName);
+            ScreenMessages.PostScreenMessage("All Input Locks Cleared", 5);
         }
 
+        internal static MonoBehaviour modeWindow = null;
+        void CallModeWindow()
+        {
+            Log.Info("CallModeWindow, modeWindow: " + (modeWindow != null));
+            if (modeWindow == null)
+                modeWindow = gameObject.AddComponent<OneTimePopup>();
+            else
+                Destroy(modeWindow);
+        }
     }
 }

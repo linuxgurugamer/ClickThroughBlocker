@@ -15,11 +15,19 @@ namespace ClickThroughFix
         Rect popupRect = new Rect(300, 50, WIDTH, HEIGHT);
         bool visible = false;
         const string POPUP_FILE_FLAG = "GameData/000_ClickThroughBlocker/PluginData/PopUpShown.cfg";
+        string cancelStr = "Cancel (window will open next startup)";
 
         public void Start()
         {
             if (HighLogic.CurrentGame.Parameters.CustomParams<CTB>().showPopup || !System.IO.File.Exists(POPUP_FILE_FLAG))
                 visible = true;
+            if (ClearAllInputLocks.ClearInputLocks.modeWindow != null)
+            {
+                visible = true;
+                focusFollowsClick = oldFocusFollowsClick = HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick;
+                focusFollowsMouse = oldFocusFollowsMouse = !focusFollowsClick;
+                cancelStr = "Cancel";
+            }
 
             popupRect.x = (Screen.width - WIDTH) / 2;
             popupRect.y = (Screen.height - HEIGHT) / 2;
@@ -71,11 +79,14 @@ namespace ClickThroughFix
                 HighLogic.CurrentGame.Parameters.CustomParams<CTB>().showPopup = false;
                 CreatePopUpFlagFile();
                 visible = false;
+                Destroy(this);
             }
             GUI.enabled = true;
-            if (GUILayout.Button("Cancel (window will open next startup)"))
+            
+            if (GUILayout.Button(cancelStr))
             {
                 visible = false;
+                Destroy(this);
             }
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();

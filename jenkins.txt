@@ -31,6 +31,7 @@
 
 # 3:SOURCEFILE, DESTDIR
 3:ClickThroughBlocker.version,GameData/000_ClickThroughBlocker
+3:changelog.cfg,GameData/000_ClickThroughBlocker
 #3:LICENSE.md,GameData/KerbalHotSeat
 #3:README.md,GameData/KerbalHotSeat
 

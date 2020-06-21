@@ -1,13 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26730.8
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickThroughBlocker", "ClickThroughBlocker\ClickThroughBlocker.csproj", "{98F60AB0-2D4D-479D-A77D-B2555934D443}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{087A2B79-84C9-4FE3-8EFD-7767F79F51A0}"
 	ProjectSection(SolutionItems) = preProject
 		buildRelease.bat = buildRelease.bat
+		changelog.cfg = changelog.cfg
 		Changelog.txt = Changelog.txt
 		ClickThroughBlocker.version = ClickThroughBlocker.version
 		deploy.bat = deploy.bat

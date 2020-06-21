@@ -40,7 +40,6 @@ namespace ClickThroughFix
 
 
 
-
         public override bool Enabled(MemberInfo member, GameParameters parameters) { return true; }
 
         public override bool Interactible(MemberInfo member, GameParameters parameters) 
