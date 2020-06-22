@@ -54,6 +54,7 @@
     </Compile>
     <Compile Include="CBTGlobalMonitor.cs" />
     <Compile Include="CBTMonitor.cs" />
+    <Compile Include="ClearInputLocks.cs" />
     <Compile Include="ClickThroughBlocker.cs" />
     <Compile Include="FocusLock.cs" />
     <Compile Include="GlobalFlagStorage.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="OnGUILoopCount.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegisterToolbar.cs" />
+    <Compile Include="SceneChangeCleanup.cs" />
     <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>

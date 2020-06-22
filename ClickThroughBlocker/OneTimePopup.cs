@@ -5,7 +5,7 @@ using KSP.IO;
 using UnityEngine;
 
 
-namespace ClickThroughFix
+namespace ClearAllInputLocks
 {
     [KSPAddon(KSPAddon.Startup.SpaceCentre, true)]
     public class OneTimePopup : MonoBehaviour
@@ -19,12 +19,12 @@ namespace ClickThroughFix
 
         public void Start()
         {
-            if (HighLogic.CurrentGame.Parameters.CustomParams<CTB>().showPopup || !System.IO.File.Exists(POPUP_FILE_FLAG))
+            if (HighLogic.CurrentGame.Parameters.CustomParams<ClickThroughFix.CTB>().showPopup || !System.IO.File.Exists(POPUP_FILE_FLAG))
                 visible = true;
-            if (ClearAllInputLocks.ClearInputLocks.modeWindow != null)
+            if (ClearInputLocks.modeWindow != null)
             {
                 visible = true;
-                focusFollowsClick = oldFocusFollowsClick = HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick;
+                focusFollowsClick = oldFocusFollowsClick = HighLogic.CurrentGame.Parameters.CustomParams<ClickThroughFix.CTB>().focusFollowsclick;
                 focusFollowsMouse = oldFocusFollowsMouse = !focusFollowsClick;
                 cancelStr = "Cancel";
             }
@@ -37,7 +37,7 @@ namespace ClickThroughFix
             if (visible)
             {
                 GUI.skin = HighLogic.Skin;
-                popupRect = ClickThruBlocker.GUILayoutWindow(847733455, popupRect, PopUpWindow, "Click Through Blocker Focus Setting");
+                popupRect = ClickThroughFix.ClickThruBlocker.GUILayoutWindow(847733455, popupRect, PopUpWindow, "Click Through Blocker Focus Setting");
             }
         }
 
@@ -75,8 +75,8 @@ namespace ClickThroughFix
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Accept"))
             {
-                HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick = focusFollowsClick;
-                HighLogic.CurrentGame.Parameters.CustomParams<CTB>().showPopup = false;
+                HighLogic.CurrentGame.Parameters.CustomParams<ClickThroughFix.CTB>().focusFollowsclick = focusFollowsClick;
+                HighLogic.CurrentGame.Parameters.CustomParams<ClickThroughFix.CTB>().showPopup = false;
                 CreatePopUpFlagFile();
                 visible = false;
                 Destroy(this);

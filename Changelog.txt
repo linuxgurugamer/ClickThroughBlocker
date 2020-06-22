@@ -1,11 +1,15 @@
 ChangeLog
 
-0.1.10.4 (unreleased)
+0.1.10.5
+	Added cleanup class to cleanup all input locks after a delay, immediately upon changing scenes
+	Added cleanup delay to settings page
+
+0.1.10.4 
 	Added MiniMod to clear input locks via toolbar button, right-click brings up window
 	Added one-time popup window 
 	Added ToolbarController as a dependency
 
-0.1.10.2 (unreleased)
+0.1.10.2
 	Removed need to save window rect
 	Reorganized code a bit
 	Removed some unnecessary assignments

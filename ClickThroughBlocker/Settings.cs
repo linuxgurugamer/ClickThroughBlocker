@@ -38,14 +38,16 @@ namespace ClickThroughFix
             toolTip = "Clearing this will allow the pop-up window to be displayed at the next game start.\nSetting it after clearing will allow the popup-window to be shown at the next start of a different save")]
         public bool showPopup = true;
 
-
+        [GameParameters.CustomFloatParameterUI("Cleanup delay", minValue = 0.1f, maxValue = 5f, displayFormat = "F2",
+            toolTip = "Time to wait after scene change before clearing all the input locks")]
+        public float cleanupDelay = 0.5f;
 
         public override bool Enabled(MemberInfo member, GameParameters parameters) { return true; }
 
         public override bool Interactible(MemberInfo member, GameParameters parameters) 
         {
             if (showPopup)
-                OneTimePopup.RemovePopUpFlagFile();
+                ClearAllInputLocks.OneTimePopup.RemovePopUpFlagFile();
             return true; 
         }
 
