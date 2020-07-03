@@ -28,9 +28,14 @@ namespace ClearAllInputLocks
                 focusFollowsMouse = oldFocusFollowsMouse = !focusFollowsClick;
                 cancelStr = "Cancel";
             }
-
+            else
+            {
+                if (visible)
+                    DontDestroyOnLoad(this);
+            }
             popupRect.x = (Screen.width - WIDTH) / 2;
             popupRect.y = (Screen.height - HEIGHT) / 2;
+
         }
         public void OnGUI()
         {
