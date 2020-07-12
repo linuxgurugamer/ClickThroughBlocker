@@ -31,17 +31,13 @@ namespace ClickThroughFix
 
             if (HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick)
             {
-                if (FocusLock.focusLockDict.Count > 0)
-                //Log.Info("CBTGlobalMonitor.FixedUpate, focusFollowsClick, count: " + ClickThruBlocker.focusLockDict.Count + ", timeTics: " + timeTics);
                 foreach (var w in FocusLock.focusLockDict)
                 {
-                   // Log.Info("CBTGlobalMonitor.FixedUpate,  lockName: " + w.Key + ", lastUpdated: " + w.Value.win.lastUpdated);
                     if (w.Value.win.lastUpdated < globalTimeTics - 4)
                     {
-                            Log.Info("CBTGlobalMonitor.FixedUpate, FreeLock  lockName: " + w.Key + ", lastUpdated: " + w.Value.win.lastUpdated);
-                            FocusLock.FreeLock(w.Key,1);
-                            w.Value.win.OnDestroy();
-                            break;
+                        FocusLock.FreeLock(w.Key, 1);
+                        w.Value.win.OnDestroy();
+                        break;
                     }
                 }
             }

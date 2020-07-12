@@ -27,7 +27,6 @@ namespace ClearAllInputLocks
             if (!ongameSceneLoadRequestedCalled)
             {
                 ongameSceneLoadRequestedCalled = true;
-                ClickThroughFix.Log.Info("SceneChangeCleanup.onGameSceneLoadRequested");
                 InputLockManager.ClearControlLocks();
             }
         }
@@ -38,7 +37,6 @@ namespace ClearAllInputLocks
             if (!onGUIApplicationLauncherReadyCalled)
             {
                 onGUIApplicationLauncherReadyCalled = true;
-                ClickThroughFix.Log.Info("SceneChangeCleanup.onGUIApplicationLauncherReady");
                 if (!isRunning)
                     StartCoroutine("CleanupInputLocks");
             }
@@ -47,11 +45,9 @@ namespace ClearAllInputLocks
         bool onLevelWasLoadedGUIReadycalled = false;
         void onLevelWasLoadedGUIReady(GameScenes gs)
         {
-            Log.Info("onLevelWasLoadedGUIReady");
             if (!onLevelWasLoadedGUIReadycalled)
             {
                 onLevelWasLoadedGUIReadycalled = true;
-                ClickThroughFix.Log.Info("SceneChangeCleanup.onLevelWasLoadedGUIReady");
                 if (!isRunning)
                     StartCoroutine("CleanupInputLocks");
             }

@@ -19,8 +19,6 @@ namespace ClickThroughFix
 
         internal static void SetLock(string lockName, ClickThruBlocker.CTBWin win, int i)
         {
-            Log.Info("SetLock: " + lockName + ", i: " + i);
-
             FocusLock focusLock;
             if (HighLogic.LoadedSceneIsEditor)
                 EditorLogic.fetch.Lock(true, true, true, lockName);
@@ -39,7 +37,6 @@ namespace ClickThroughFix
         internal static void FreeLock(string lockName, int i)
         {
             focusLockDict.Remove(lockName);
-            Log.Info("FreeLock: " + lockName + ", i: " + i);
             // flight
             if (!HighLogic.LoadedSceneIsEditor)
                 InputLockManager.RemoveControlLock(lockName);

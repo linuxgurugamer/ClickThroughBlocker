@@ -9,7 +9,7 @@ namespace ClickThroughFix
 {
     internal static class Log
     {
-        public enum LEVEL
+        internal enum LEVEL
         {
             OFF = 0,
             ERROR = 1,
@@ -20,27 +20,27 @@ namespace ClickThroughFix
         };
         static string PREFIX = "ClickThroughBlocker: ";
 
-        public static void setTitle(string t)
+        internal static void setTitle(string t)
         {
             PREFIX = t + ": ";
         }
 
-        public static LEVEL level = LEVEL.INFO;
+        internal static LEVEL level = LEVEL.INFO;
 
 
 
-        public static LEVEL GetLevel()
+        internal static LEVEL GetLevel()
         {
             return level;
         }
 
-        public static void SetLevel(LEVEL level)
+        internal static void SetLevel(LEVEL level)
         {
             UnityEngine.Debug.Log("log level " + level);
             Log.level = level;
         }
 
-        public static LEVEL GetLogLevel()
+        internal static LEVEL GetLogLevel()
         {
             return level;
         }
@@ -50,12 +50,12 @@ namespace ClickThroughFix
             return level == Log.level;
         }
 
-        public static bool IsLogable(LEVEL level)
+        internal static bool IsLogable(LEVEL level)
         {
             return level <= Log.level;
         }
 
-        public static void Trace(String msg)
+        internal static void Trace(String msg)
         {
             if (IsLogable(LEVEL.TRACE))
             {
@@ -63,7 +63,7 @@ namespace ClickThroughFix
             }
         }
 
-        public static void Detail(String msg)
+        internal static void Detail(String msg)
         {
             if (IsLogable(LEVEL.DETAIL))
             {
@@ -72,7 +72,7 @@ namespace ClickThroughFix
         }
 
         [ConditionalAttribute("DEBUG")]
-        public static void Info(String msg)
+        internal static void Info(String msg)
         {
 
             if (IsLogable(LEVEL.INFO))
@@ -82,7 +82,7 @@ namespace ClickThroughFix
         }
 
         //        [ConditionalAttribute("DEBUG")]
-        public static void Test(String msg)
+        internal static void Test(String msg)
         {
             //if (IsLogable(LEVEL.INFO))
             {
@@ -91,7 +91,7 @@ namespace ClickThroughFix
         }
 
 
-        public static void Warning(String msg)
+        internal static void Warning(String msg)
         {
             if (IsLogable(LEVEL.WARNING))
             {
@@ -99,7 +99,7 @@ namespace ClickThroughFix
             }
         }
 
-        public static void Error(String msg)
+        internal static void Error(String msg)
         {
             if (IsLogable(LEVEL.ERROR))
             {
@@ -107,7 +107,7 @@ namespace ClickThroughFix
             }
         }
 
-        public static void Exception(Exception e)
+        internal static void Exception(Exception e)
         {
             Log.Error("exception caught: " + e.GetType() + ": " + e.Message);
         }

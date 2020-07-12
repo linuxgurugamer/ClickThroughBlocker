@@ -65,11 +65,14 @@ namespace ClearAllInputLocks
         internal static MonoBehaviour modeWindow = null;
         void CallModeWindow()
         {
-            ClickThroughFix.Log.Info("CallModeWindow, modeWindow: " + (modeWindow != null));
+            //ClickThroughFix.Log.Info("CallModeWindow, modeWindow: " + (modeWindow != null));
             if (modeWindow == null)
                 modeWindow = gameObject.AddComponent<OneTimePopup>();
             else
+            {
                 Destroy(modeWindow);
+                InputLockManager.ClearControlLocks();
+            }
         }
     }
 }

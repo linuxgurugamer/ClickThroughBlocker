@@ -144,7 +144,7 @@ namespace ClickThroughFix
                     {
                         if (mouseOverWindow)
                         {
-                            Log.Info("PreventInFlightClickthrough, mouse clicked and over window, weLockedFlightInputs:" + weLockedFlightInputs + ", lockName: " + lockName);
+                            //Log.Info("PreventInFlightClickthrough, mouse clicked and over window, weLockedFlightInputs:" + weLockedFlightInputs + ", lockName: " + lockName);
                             if (!weLockedFlightInputs && !Input.GetMouseButton(1) && lockName != null)
                             {
                                 //InputLockManager.SetControlLock(ControlTypes.ALLBUTCAMERAS, lockName);
@@ -154,7 +154,7 @@ namespace ClickThroughFix
                         }
                         else
                         {
-                            Log.Info("PreventInFlightClickthrough, mouse clicked and NOT over window, weLockedFlightInputs:" + weLockedFlightInputs + ", lockName: " + lockName);
+                            //Log.Info("PreventInFlightClickthrough, mouse clicked and NOT over window, weLockedFlightInputs:" + weLockedFlightInputs + ", lockName: " + lockName);
 
                             if (weLockedFlightInputs && lockName != null)
                             {

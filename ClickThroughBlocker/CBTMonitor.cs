@@ -4,13 +4,12 @@ using KSP.UI.Screens;
 #if !DUMMY
 namespace ClickThroughFix
 {
-    //[KSPAddon(KSPAddon.Startup.SpaceCentre, true)]
-    [KSPAddon(KSPAddon.Startup.EditorAny, false)]
+    [KSPAddon(KSPAddon.Startup.SpaceCentre, true)]
     class CBTMonitor : MonoBehaviour
     {
         void Start()
         {
-            //DontDestroyOnLoad(this);
+            DontDestroyOnLoad(this);
             // GameEvents.onGameSceneLoadRequested.Add(onGameSceneLoadRequested);
             ClickThruBlocker.CTBWin.activeBlockerCnt = 0;
         }
@@ -28,8 +27,6 @@ namespace ClickThroughFix
         {
             if (HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick)
                 return;
-
-            //if (HighLogic.LoadedSceneIsEditor )
             {
                 if (ClickThruBlocker.CTBWin.activeBlockerCnt > 0)
                 {
@@ -38,7 +35,6 @@ namespace ClickThroughFix
 
                     if (EditorLogic.fetch == null)
                     {
-                        Log.Info("EditorLogic.fetch == null");
                         return;
                     }
 
@@ -75,9 +71,7 @@ namespace ClickThroughFix
 
             d = 0;
             ClickThruBlocker.CTBWin win = null;
-            //timeTics++;
             {
-
                 foreach (var w in ClickThruBlocker.winList)
                 {
                     if (w.Value.lastUpdated + 4 < CBTGlobalMonitor.globalTimeTics) //+ 0.05 < Planetarium.GetUniversalTime())

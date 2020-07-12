@@ -1,5 +1,10 @@
 ChangeLog
 
+0.1.10.9
+	Fixed Popupshown.cfg from having endless repeats of the popupshown = true appended
+	Fixed error which caused buildings to be non-clickable if clicking on a control in the window closed it (such as an X or a Close button)
+	Made all members of Log class to be internal, to avoid conflicts with KSP_Log
+
 0.1.10.6
 	Added missing files
 

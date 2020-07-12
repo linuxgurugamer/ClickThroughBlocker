@@ -3,6 +3,7 @@ using System.IO;
 
 using KSP.IO;
 using UnityEngine;
+using ClickThroughFix;
 
 
 namespace ClearAllInputLocks
@@ -37,12 +38,20 @@ namespace ClearAllInputLocks
             popupRect.y = (Screen.height - HEIGHT) / 2;
 
         }
+#if false
+        void OnDestroy()
+        {
+            InputLockManager.ClearControlLocks();
+        }
+#endif
+
         public void OnGUI()
         {
             if (visible)
             {
                 GUI.skin = HighLogic.Skin;
-                popupRect = ClickThroughFix.ClickThruBlocker.GUILayoutWindow(847733455, popupRect, PopUpWindow, "Click Through Blocker Focus Setting");
+                //popupRect = GUILayout.Window(847733455, popupRect, PopUpWindow, "Click Through Blocker Focus Setting");
+                popupRect = ClickThruBlocker.GUILayoutWindow(84733455, popupRect, PopUpWindow, "Click Through Blocker Focus Setting");
             }
         }
 
@@ -102,7 +111,8 @@ namespace ClearAllInputLocks
 
         void CreatePopUpFlagFile()
         {
-            System.IO.File.AppendAllText(POPUP_FILE_FLAG, "popupshown = true");
+            RemovePopUpFlagFile(); // remove first to avoid any overwriting
+            System.IO.File.WriteAllText(POPUP_FILE_FLAG, "popupshown = true");
         }
 
         public static void RemovePopUpFlagFile()
