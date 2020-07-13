@@ -25,7 +25,7 @@ namespace ClickThroughFix
         // the mouse moved over a protected window
         void Update()
         {
-            if (HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick)
+            if (HighLogic.CurrentGame == null || HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick)
                 return;
             {
                 if (ClickThruBlocker.CTBWin.activeBlockerCnt > 0)
@@ -66,7 +66,7 @@ namespace ClickThroughFix
         int d;
         void LateUpdate()
         {
-            if (HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick)
+            if (HighLogic.CurrentGame == null || HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick)
                 return;
 
             d = 0;
