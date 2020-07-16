@@ -4,12 +4,13 @@ using KSP.UI.Screens;
 #if !DUMMY
 namespace ClickThroughFix
 {
-    [KSPAddon(KSPAddon.Startup.SpaceCentre, true)]
+    //[KSPAddon(KSPAddon.Startup.SpaceCentre, true)]
+    [KSPAddon(KSPAddon.Startup.EditorAny, false)]
     class CBTMonitor : MonoBehaviour
     {
         void Start()
         {
-            DontDestroyOnLoad(this);
+            //DontDestroyOnLoad(this);
             // GameEvents.onGameSceneLoadRequested.Add(onGameSceneLoadRequested);
             ClickThruBlocker.CTBWin.activeBlockerCnt = 0;
         }
@@ -25,7 +26,9 @@ namespace ClickThroughFix
         // the mouse moved over a protected window
         void Update()
         {
-            if (HighLogic.CurrentGame == null || HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick)
+            if (HighLogic.CurrentGame == null || 
+                HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick) // ||
+                //(!HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick && !HighLogic.LoadedSceneIsEditor))
                 return;
             {
                 if (ClickThruBlocker.CTBWin.activeBlockerCnt > 0)
@@ -66,7 +69,9 @@ namespace ClickThroughFix
         int d;
         void LateUpdate()
         {
-            if (HighLogic.CurrentGame == null || HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick)
+            if (HighLogic.CurrentGame == null || 
+                HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick) // ||
+                //(!HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick && !HighLogic.LoadedSceneIsEditor))
                 return;
 
             d = 0;

@@ -1,5 +1,8 @@
 ChangeLog
 
+0.1.10.11
+	Fixed overly aggressive CBTMonitor which was causing the vessel highlighting to stop in the editor when FocusFollowsMouse was set
+
 0.1.10.10
 	Fix nullrefs upong returning to mainmenu by adding check for no game loaded (ie:  returning to main menu) in CBTMonitor.Update & CBTMonitor.LateUpdate
 
