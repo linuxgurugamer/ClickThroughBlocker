@@ -4,7 +4,7 @@ using System.IO;
 using KSP.IO;
 using UnityEngine;
 using ClickThroughFix;
-
+using System.Reflection;
 
 namespace ClearAllInputLocks
 {
@@ -15,12 +15,19 @@ namespace ClearAllInputLocks
         const int HEIGHT = 350;
         Rect popupRect = new Rect(300, 50, WIDTH, HEIGHT);
         bool visible = false;
-        const string POPUP_FILE_FLAG = "GameData/000_ClickThroughBlocker/PluginData/PopUpShown.cfg";
+        string popUpShownCfgPath;
         string cancelStr = "Cancel (window will open next startup)";
+
+        public OneTimePopup()
+        {
+            popUpShownCfgPath = Path.Combine(
+                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                "../PluginData/PopUpShown.cfg");
+        }
 
         public void Start()
         {
-            if (HighLogic.CurrentGame.Parameters.CustomParams<ClickThroughFix.CTB>().showPopup || !System.IO.File.Exists(POPUP_FILE_FLAG))
+            if (HighLogic.CurrentGame.Parameters.CustomParams<ClickThroughFix.CTB>().showPopup || !System.IO.File.Exists(popUpShownCfgPath))
                 visible = true;
             if (ClearInputLocks.modeWindow != null)
             {
@@ -112,12 +119,12 @@ namespace ClearAllInputLocks
         void CreatePopUpFlagFile()
         {
             RemovePopUpFlagFile(); // remove first to avoid any overwriting
-            System.IO.File.WriteAllText(POPUP_FILE_FLAG, "popupshown = true");
+            System.IO.File.WriteAllText(popUpShownCfgPath, "popupshown = true");
         }
 
         public static void RemovePopUpFlagFile()
         {
-            System.IO.File.Delete(POPUP_FILE_FLAG);
+            System.IO.File.Delete(popUpShownCfgPath);
         }
     }
 }
