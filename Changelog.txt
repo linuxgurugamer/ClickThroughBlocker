@@ -1,5 +1,8 @@
 ChangeLog
 
+0.1.10.12
+	Fixed inputlocks not being cleared when setting FocusFollowsMouse
+
 0.1.10.11
 	Fixed overly aggressive CBTMonitor which was causing the vessel highlighting to stop in the editor when FocusFollowsMouse was set
 

@@ -92,6 +92,7 @@ namespace ClearAllInputLocks
                 HighLogic.CurrentGame.Parameters.CustomParams<ClickThroughFix.CTB>().focusFollowsclick = focusFollowsClick;
                 HighLogic.CurrentGame.Parameters.CustomParams<ClickThroughFix.CTB>().showPopup = false;
                 CreatePopUpFlagFile();
+                ClearInputLocks.ClearInputLocksToggle();
                 visible = false;
                 Destroy(this);
             }

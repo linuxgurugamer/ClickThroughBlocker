@@ -56,7 +56,7 @@ namespace ClearAllInputLocks
                 Destroy(toolbarControl);
             }
         }
-        void ClearInputLocksToggle()
+        static internal void ClearInputLocksToggle()
         {
             InputLockManager.ClearControlLocks();
             ScreenMessages.PostScreenMessage("All Input Locks Cleared", 5);
