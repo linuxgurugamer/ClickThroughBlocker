@@ -101,6 +101,7 @@ namespace ClearAllInputLocks
             if (GUILayout.Button(cancelStr))
             {
                 visible = false;
+                ClearInputLocks.ClearInputLocksToggle();
                 Destroy(this);
             }
             GUILayout.EndHorizontal();

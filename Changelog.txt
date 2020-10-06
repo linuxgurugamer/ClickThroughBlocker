@@ -1,5 +1,8 @@
 ChangeLog
 
+0.1.10.13 (unreleased)
+	Fixed inputlogs not being cleared when canceling the window
+
 0.1.10.12
 	Fixed inputlocks not being cleared when setting FocusFollowsMouse
 
