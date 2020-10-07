@@ -8,7 +8,7 @@ using KSP.IO;
 using UnityEngine;
 
 
-namespace ClearAllInputLocks
+namespace ClickThroughFix
 {
     [KSPAddon(KSPAddon.Startup.MainMenu, true)]
     public class RegisterToolbar : MonoBehaviour
@@ -16,6 +16,7 @@ namespace ClearAllInputLocks
         void Start()
         {
             ToolbarControl.RegisterMod(ClearInputLocks.MODID, ClearInputLocks.MODNAME);
+            ToolbarControl.RegisterMod(ClearInputLocks.MODID2, ClearInputLocks.MODNAME2);
         }
     }
 }

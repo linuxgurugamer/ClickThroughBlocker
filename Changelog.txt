@@ -1,7 +1,12 @@
 ChangeLog
 
-0.1.10.13 (unreleased)
-	Fixed inputlogs not being cleared when canceling the window
+0.1.10.13
+	Fixed inputlocks not being cleared when canceling the window
+	Added mode toggle on new button to allow toggling between different modes during the game
+	Updated settings to make it clear if popup will be shown next time in the space center
+	Added code to disable the ShowPopup flag if the focusFollowsClick is changed in the settings
+	Thanks to github user @SteveBenz for this:
+		Make the configuration file not depend on Environment.CurrentDirectory and instead depend on the deployment location of the DLL
 
 0.1.10.12
 	Fixed inputlocks not being cleared when setting FocusFollowsMouse

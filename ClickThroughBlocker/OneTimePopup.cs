@@ -6,33 +6,41 @@ using UnityEngine;
 using ClickThroughFix;
 using System.Reflection;
 
-namespace ClearAllInputLocks
+namespace ClickThroughFix
 {
-    [KSPAddon(KSPAddon.Startup.SpaceCentre, true)]
+    [KSPAddon(KSPAddon.Startup.SpaceCentre, false)]
     public class OneTimePopup : MonoBehaviour
     {
-        const int  WIDTH = 600;
+        internal static OneTimePopup Instance = null;
+        const int WIDTH = 600;
         const int HEIGHT = 350;
         Rect popupRect = new Rect(300, 50, WIDTH, HEIGHT);
         bool visible = false;
         string popUpShownCfgPath;
         string cancelStr = "Cancel (window will open next startup)";
-
-        public OneTimePopup()
+        Game curGame;
+        public void Awake()
         {
             popUpShownCfgPath = Path.Combine(
-                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                "../PluginData/PopUpShown.cfg");
+                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "../PluginData/PopUpShown.cfg");
+            if (HighLogic.CurrentGame != curGame)
+            {
+                ClearInputLocks.focusFollowsclick = HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick;
+                curGame = HighLogic.CurrentGame;
+            }
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<CTB>().showPopup)
+                Destroy(this);
+            Instance = this;
         }
 
         public void Start()
         {
-            if (HighLogic.CurrentGame.Parameters.CustomParams<ClickThroughFix.CTB>().showPopup || !System.IO.File.Exists(popUpShownCfgPath))
-                visible = true;
+
+            visible = true;
             if (ClearInputLocks.modeWindow != null)
             {
                 visible = true;
-                focusFollowsClick = oldFocusFollowsClick = HighLogic.CurrentGame.Parameters.CustomParams<ClickThroughFix.CTB>().focusFollowsclick;
+                focusFollowsClick = oldFocusFollowsClick = HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick;
                 focusFollowsMouse = oldFocusFollowsMouse = !focusFollowsClick;
                 cancelStr = "Cancel";
             }
@@ -45,12 +53,12 @@ namespace ClearAllInputLocks
             popupRect.y = (Screen.height - HEIGHT) / 2;
 
         }
-#if false
+
         void OnDestroy()
         {
-            InputLockManager.ClearControlLocks();
+            Instance = null;
         }
-#endif
+
 
         public void OnGUI()
         {
@@ -76,7 +84,7 @@ namespace ClearAllInputLocks
             GUILayout.Label("you will need to click on a window for that window to have the focus, and the focus");
             GUILayout.Label("won't leave the window without clicking outside the window");
             GUILayout.Space(10);
-            GUILayout.Label("This window will only appear once to offer the choice of focus model.  It can always");            
+            GUILayout.Label("This window will only appear once to offer the choice of focus model.  It can always");
             GUILayout.Label("be changed in the stock settings window, under the Click-Through-Blocker tab");
             GUILayout.Space(20);
             focusFollowsMouse = GUILayout.Toggle(focusFollowsMouse, "Focus-Follows-Mouse");
@@ -85,7 +93,7 @@ namespace ClearAllInputLocks
             {
                 oldFocusFollowsMouse = true;
                 focusFollowsClick = oldFocusFollowsClick = false;
-            } 
+            }
             if (focusFollowsClick && !oldFocusFollowsClick)
             {
                 oldFocusFollowsClick = true;
@@ -96,15 +104,15 @@ namespace ClearAllInputLocks
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Accept"))
             {
-                HighLogic.CurrentGame.Parameters.CustomParams<ClickThroughFix.CTB>().focusFollowsclick = focusFollowsClick;
-                HighLogic.CurrentGame.Parameters.CustomParams<ClickThroughFix.CTB>().showPopup = false;
+                HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick = focusFollowsClick;
+                HighLogic.CurrentGame.Parameters.CustomParams<CTB>().showPopup = false;
                 CreatePopUpFlagFile();
                 ClearInputLocks.ClearInputLocksToggle();
                 visible = false;
                 Destroy(this);
             }
             GUI.enabled = true;
-            
+
             if (GUILayout.Button(cancelStr))
             {
                 visible = false;
@@ -124,7 +132,7 @@ namespace ClearAllInputLocks
             System.IO.File.WriteAllText(popUpShownCfgPath, "popupshown = true");
         }
 
-        public static void RemovePopUpFlagFile()
+        public void RemovePopUpFlagFile()
         {
             System.IO.File.Delete(popUpShownCfgPath);
         }

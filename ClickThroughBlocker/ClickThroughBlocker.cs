@@ -69,7 +69,7 @@ namespace ClickThroughFix
                 //Log.Info("ClickThruBlocker: PreventEditorClickthrough");
                 bool mouseOverWindow = MouseIsOverWindow(r);
                 //Log.Info("PreventEditorClickthrough, mouseOverWindow: " + mouseOverWindow);
-                if (HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick)
+                if (ClearInputLocks.focusFollowsclick)
                 {
                     bool mouseClicked = Input.GetMouseButton(0) || Input.GetMouseButton(1);
                     if (mouseClicked)
@@ -137,7 +137,7 @@ namespace ClickThroughFix
                 //
                 // This section for the Click to Focus option
                 //
-                if (HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick)
+                if (ClearInputLocks.focusFollowsclick)
                 {
                     bool mouseClicked = Input.GetMouseButton(0) || Input.GetMouseButton(1);
                     if (mouseClicked)

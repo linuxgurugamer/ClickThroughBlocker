@@ -29,7 +29,7 @@ namespace ClickThroughFix
         {
             globalTimeTics++;
 
-            if (HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick)
+            if (ClearInputLocks.focusFollowsclick)
             {
                 foreach (var w in FocusLock.focusLockDict)
                 {

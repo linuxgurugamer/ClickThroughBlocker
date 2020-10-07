@@ -26,17 +26,19 @@ namespace ClickThroughFix
         public override int SectionOrder { get { return 1; } }
         public override bool HasPresets { get { return false; } }
 
+        [GameParameters.CustomParameterUI("Show Popup at next start",
+            toolTip = "Clearing this will allow the pop-up window to be displayed at the next game start.\nSetting it after clearing will allow the popup-window to be shown at the next start of a different save")]
+        public bool showPopup = true;
+
         [GameParameters.CustomParameterUI("Focus follows mouse click",
             toolTip = "Click on a window to move the  focus to it")]
         public bool focusFollowsclick = false;
+
 
         [GameParameters.CustomParameterUI("Focus change is global",
          toolTip = "This will make it a global setting for all games")]
         public bool global = true;
 
-        [GameParameters.CustomParameterUI("Show Popup at next start",
-            toolTip = "Clearing this will allow the pop-up window to be displayed at the next game start.\nSetting it after clearing will allow the popup-window to be shown at the next start of a different save")]
-        public bool showPopup = true;
 
         [GameParameters.CustomFloatParameterUI("Cleanup delay", minValue = 0.1f, maxValue = 5f, displayFormat = "F2",
             toolTip = "Time to wait after scene change before clearing all the input locks")]
@@ -44,10 +46,20 @@ namespace ClickThroughFix
 
         public override bool Enabled(MemberInfo member, GameParameters parameters) { return true; }
 
+        bool? oldFocusFollowsClick;
+        
         public override bool Interactible(MemberInfo member, GameParameters parameters) 
         {
-            if (showPopup)
-                ClearAllInputLocks.OneTimePopup.RemovePopUpFlagFile();
+            if (oldFocusFollowsClick == null)
+                oldFocusFollowsClick = focusFollowsclick;
+
+            if (oldFocusFollowsClick != focusFollowsclick)
+            {
+                oldFocusFollowsClick = focusFollowsclick;
+                showPopup = false;
+            }
+            if (showPopup && OneTimePopup.Instance != null)
+                OneTimePopup.Instance.RemovePopUpFlagFile();
             return true; 
         }
 

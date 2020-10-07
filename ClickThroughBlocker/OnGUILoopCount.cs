@@ -22,7 +22,7 @@ namespace ClickThroughFix
         long lastonGuiCnt;
         private void DoGuiCounter()
         {
-            if (HighLogic.CurrentGame == null || HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick)
+            if (HighLogic.CurrentGame == null || ClearInputLocks.focusFollowsclick)
                 return;
 
             lastonGuiCnt = (onguiCnt++) - 1;
