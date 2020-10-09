@@ -100,7 +100,10 @@ namespace ClickThroughFix
         {
             //ClickThroughFix.Log.Info("CallModeWindow, modeWindow: " + (modeWindow != null));
             if (modeWindow == null)
+            {
+                HighLogic.CurrentGame.Parameters.CustomParams<CTB>().showPopup = true;
                 modeWindow = gameObject.AddComponent<OneTimePopup>();
+            }
             else
             {
                 Destroy(modeWindow);

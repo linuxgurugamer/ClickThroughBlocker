@@ -93,11 +93,16 @@
 start /D D:\Users\jbb\github\ClickThroughBlocker /WAIT deploy.bat  $(TargetDir) $(TargetFileName)
 
 
+
+
 if $(ConfigurationName) == Release (
 
 
 
-	start /D D:\Users\jbb\github\ClickThroughBlocker /WAIT buildRelease.bat $(TargetDir) $(TargetFileName)
+
+	start /D D:\Users\jbb\github\ClickThroughBlocker /WAIT buildRelease.bat $(TargetDir) $(TargetFileName) $(TargetName)
+
+
 
 )</PostBuildEvent>
   </PropertyGroup>

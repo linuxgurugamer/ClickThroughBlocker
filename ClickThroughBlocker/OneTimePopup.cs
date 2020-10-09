@@ -16,13 +16,17 @@ namespace ClickThroughFix
         const int HEIGHT = 350;
         Rect popupRect = new Rect(300, 50, WIDTH, HEIGHT);
         bool visible = false;
-        string popUpShownCfgPath;
+        static string popUpShownCfgPath { get { 
+                return Path.Combine(
+                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "../PluginData/PopUpShown.cfg"); ; 
+            } }
+
         string cancelStr = "Cancel (window will open next startup)";
         Game curGame;
         public void Awake()
         {
-            popUpShownCfgPath = Path.Combine(
-                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "../PluginData/PopUpShown.cfg");
+            //popUpShownCfgPath = Path.Combine(
+            //    Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "../PluginData/PopUpShown.cfg");
             if (HighLogic.CurrentGame != curGame)
             {
                 ClearInputLocks.focusFollowsclick = HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick;
@@ -102,6 +106,10 @@ namespace ClickThroughFix
             if (!focusFollowsClick && !focusFollowsMouse)
                 GUI.enabled = false;
             GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Save as global default for all new saves"))
+            {
+                SaveGlobalDefault();
+            }
             if (GUILayout.Button("Accept"))
             {
                 HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick = focusFollowsClick;
@@ -125,14 +133,38 @@ namespace ClickThroughFix
             GUI.DragWindow();
         }
 
-
-        void CreatePopUpFlagFile()
+        static string GlobalDefaultFile
+        {
+            get
+            {
+                return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/../Global.cfg";
+            }
+        }
+        void SaveGlobalDefault()
+        {
+            ConfigNode node = new ConfigNode();
+            node.AddValue("focusFollowsClick", focusFollowsClick);
+            node.Save(GlobalDefaultFile);
+        }
+        static internal bool GetGlobalDefault(ref bool b)
+        {
+            if (System.IO.File.Exists(GlobalDefaultFile))
+            {
+                ConfigNode node = ConfigNode.Load(GlobalDefaultFile);
+                if (node.TryGetValue("focusFollowsClick", ref b))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        static internal void CreatePopUpFlagFile()
         {
             RemovePopUpFlagFile(); // remove first to avoid any overwriting
             System.IO.File.WriteAllText(popUpShownCfgPath, "popupshown = true");
         }
 
-        public void RemovePopUpFlagFile()
+        static public void RemovePopUpFlagFile()
         {
             System.IO.File.Delete(popUpShownCfgPath);
         }

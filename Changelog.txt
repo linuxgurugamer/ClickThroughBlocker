@@ -1,5 +1,12 @@
 ChangeLog
 
+0.1.10.14 
+	Fixed performance issue in the editor when FocusFollowsMouse was active
+		Two problems:  
+			GetComponent was being called on every part
+			EditorActionGroups.Instance.ClearSelection was being called every time through Update()
+	Added global value for FocusFollowsClick or FocusFollowsMouse for all new saves
+
 0.1.10.13
 	Fixed inputlocks not being cleared when canceling the window
 	Added mode toggle on new button to allow toggling between different modes during the game

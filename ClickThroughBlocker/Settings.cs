@@ -59,7 +59,7 @@ namespace ClickThroughFix
                 showPopup = false;
             }
             if (showPopup && OneTimePopup.Instance != null)
-                OneTimePopup.Instance.RemovePopUpFlagFile();
+                OneTimePopup.RemovePopUpFlagFile();
             return true; 
         }
 
