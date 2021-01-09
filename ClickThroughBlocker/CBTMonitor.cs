@@ -119,11 +119,12 @@ namespace ClickThroughFix
                 //(!HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick && !HighLogic.LoadedSceneIsEditor))
                 return;
 
-            d = 0;
+            d = -1;
             ClickThruBlocker.CTBWin win = null;
             {
                 foreach (var w in ClickThruBlocker.winList)
                 {
+                    //Log.Info("LateUpdate, w.Value.lastUpdated: " + w.Value.lastUpdated);
                     if (w.Value.lastUpdated + 4 < CBTGlobalMonitor.globalTimeTics) //+ 0.05 < Planetarium.GetUniversalTime())
                     {
                         d = w.Key;
@@ -131,7 +132,7 @@ namespace ClickThroughFix
                         break;
                     }
                 }
-                if (d != 0)
+                if (d != -1)
                 {
                     win.OnDestroy();
                 }

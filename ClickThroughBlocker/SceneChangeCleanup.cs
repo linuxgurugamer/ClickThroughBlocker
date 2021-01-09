@@ -62,13 +62,13 @@ namespace ClearAllInputLocks
         bool isRunning = false;
         IEnumerator  CleanupInputLocks()
         {
-            Log.Info("CleanUpInputLocks entry");
+            //Log.Info("CleanUpInputLocks entry");
             isRunning = true;
             yield return new WaitForSeconds(HighLogic.CurrentGame.Parameters.CustomParams<ClickThroughFix.CTB>().cleanupDelay);
             InputLockManager.ClearControlLocks();
             yield return null;
             isRunning = false;
-            Log.Info("CleanUpInputLocks exit");
+            //Log.Info("CleanUpInputLocks exit");
         }
     }
 }

@@ -89,27 +89,30 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
+set KSPDIR=$(KSPDIR)
 
-start /D D:\Users\jbb\github\ClickThroughBlocker /WAIT deploy.bat  $(TargetDir) $(TargetFileName)
+IF "%25KSPDIR%25"=="" (
 
+	ECHO Configuration error - KSPDIR not specified in project.
 
+	ECHO Either set KSPDIR environment variable or edit BetterLoadSaveGame.Common.props
 
+	PAUSE
 
-if $(ConfigurationName) == Release (
+	GOTO DONE
 
+)
 
+start /D $(SolutionDir) /WAIT deploy.bat  $(TargetDir) $(TargetFileName) $(TargetName)
 
+if $(ConfigurationName) == Release (	
 
-	start /D D:\Users\jbb\github\ClickThroughBlocker /WAIT buildRelease.bat $(TargetDir) $(TargetFileName) $(TargetName)
-
-
+	start /D $(SolutionDir) /WAIT buildRelease.bat $(TargetDir) $(TargetFileName) $(TargetName)
 
 )</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>
-set textTemplatingPath="%25ProgramFiles(x86)%25\Microsoft Visual Studio\2017\Community\Common7\IDE\texttransform.exe"
-%25textTemplatingPath%25 "$(ProjectDir)AssemblyVersion.tt"
-</PreBuildEvent>
+"$(DevEnvDir)\texttransform.exe" "$(ProjectDir)AssemblyVersion.tt"</PreBuildEvent>
   </PropertyGroup>
 </Project>
