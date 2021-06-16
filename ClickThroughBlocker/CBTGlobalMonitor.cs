@@ -35,7 +35,7 @@ namespace ClickThroughFix
                 {
                     if (w.Value.win.lastUpdated < globalTimeTics - 4)
                     {
-                        FocusLock.FreeLock(w.Key, 1);
+                        FocusLock.FreeLock(w.Key, w.Value.win, 1);
                         w.Value.win.OnDestroy();
                         break;
                     }

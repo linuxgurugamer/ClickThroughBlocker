@@ -33,8 +33,10 @@ namespace ClickThroughFix
             {
                 focusLockDict.Add(lockName, new FocusLock(lockName, win));
             }
+
+            ClickThruBlocker.InvokeFocusCallbacks(win.id, true);
         }
-        internal static void FreeLock(string lockName, int i)
+        internal static void FreeLock(string lockName, ClickThruBlocker.CTBWin win, int i)
         {
             focusLockDict.Remove(lockName);
             // flight
@@ -42,6 +44,8 @@ namespace ClickThroughFix
                 InputLockManager.RemoveControlLock(lockName);
             else
                 EditorLogic.fetch.Unlock(lockName);
+
+            ClickThruBlocker.InvokeFocusCallbacks(win.id, false);
         }
     }
 

@@ -11,7 +11,18 @@ namespace ClickThroughFix
 #if !DUMMY2
         internal static Dictionary<int, CTBWin> winList = new Dictionary<int, CTBWin>();
 #endif
+        /// <summary>
+        /// A user-supplied delegate for ClickThroughBlocker to call when a
+        /// specified window just gained focus or just lost focus.
+        /// <para/>
+        /// The parameter 'focused' specifies whether the window just gained focus or just lost focus.
+        /// </summary>
+        public delegate void FocusCallback(bool focused);
 
+        // A HashSet is used to protect ClickThruBlocker from duplicates
+        // if a user mistakenly tries to register their callback during OnGUI() alongside
+        // their call to GUIWindow() or GUILayoutWindow().
+        internal static Dictionary<int, HashSet<FocusCallback>> focusCallbacks;
 
         // Most of this is from JanitorsCloset, ImportExportSelect.cs
 
@@ -28,7 +39,6 @@ namespace ClickThroughFix
             internal long lastLockCycle;
             internal double lastUpdated = 0;
             // Rect activeWindow;
-
 
             public CTBWin(int id, Rect screenRect, string winName, string lockName)
             {
@@ -92,7 +102,7 @@ namespace ClickThroughFix
                         {
                             if (weLockedEditorInputs)
                             {
-                                FocusLock.FreeLock(lockName, 3);
+                                FocusLock.FreeLock(lockName, win, 3);
                                 weLockedEditorInputs = false;
                                 activeBlockerCnt--;
                             }
@@ -120,7 +130,7 @@ namespace ClickThroughFix
                     if (!weLockedEditorInputs) return;
                     //Log.Info("PreventEditorClickthrough, unlocking on window: " + windowName);
                     //EditorLogic.fetch.Unlock(lockName);
-                    FocusLock.FreeLock(lockName, 5);
+                    FocusLock.FreeLock(lockName, win, 5);
 
                     weLockedEditorInputs = false;
                     activeBlockerCnt--;
@@ -159,7 +169,7 @@ namespace ClickThroughFix
                             if (weLockedFlightInputs && lockName != null)
                             {
                                 // InputLockManager.RemoveControlLock(lockName);
-                                FocusLock.FreeLock(lockName, 7);
+                                FocusLock.FreeLock(lockName, win, 7);
                                 weLockedFlightInputs = false;
                             }
                         }
@@ -188,7 +198,7 @@ namespace ClickThroughFix
                     {
                         //Log.Info("PreventInFlightClickthrough, unlocking on window: " + windowName);
                         //InputLockManager.RemoveControlLock(lockName);
-                        FocusLock.FreeLock(lockName, 9);
+                        FocusLock.FreeLock(lockName, win, 9);
                         weLockedFlightInputs = false;
                     }
                 }
@@ -359,7 +369,57 @@ namespace ClickThroughFix
             return UpdateList(id, r, id.ToString());
         }
 
+        // static for speed - same reason as `win` up above:
+        internal static HashSet<FocusCallback> callbackSet;
 
+        /// <summary>
+        /// You can register a callback delegate with this call that ClickThruBlocker will
+        /// call every time the window with the given ID number either gains or loses focus.
+        /// </summary>
+        /// <param name="id">The same window ID used in the call to GUIWindow() or GUILayoutWindow()</param>
+        /// <param name="hook">Your delegate that ClickThruBlocker calls</param>
+        public static void RegisterFocusCallback(int id, FocusCallback hook)
+        {
+            if (focusCallbacks == null)
+            {
+                focusCallbacks = new Dictionary<int, HashSet<FocusCallback>>();
+            }
+            if (!focusCallbacks.TryGetValue(id, out callbackSet))
+            {
+                callbackSet = new HashSet<FocusCallback>();
+                focusCallbacks.Add(id, callbackSet);
+            }
+            callbackSet.Add(hook);
+        }
+
+        /// <summary>
+        /// To turn off a callback registered with RegisterFocusCallback(), call this.
+        /// Be sure to call this when your object gets disposed.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="hook"></param>
+        public static void RemoveFocusCallback(int id, FocusCallback hook)
+        {
+            if (focusCallbacks!= null && focusCallbacks.TryGetValue(id, out callbackSet))
+            {
+                callbackSet.Remove(hook);
+            }
+        }
+
+        internal static void InvokeFocusCallbacks(int id, bool focused)
+        {
+            if (focusCallbacks != null)
+            {
+                if (focusCallbacks.TryGetValue(id, out callbackSet))
+                {
+                    foreach (FocusCallback callback in callbackSet)
+                    {
+                        callback.Invoke(focused);
+                    }
+                }
+
+            }
+        }
 
 #if false
 
@@ -530,4 +590,98 @@ namespace ClickThroughFix
         }
 #endif
     }
+
+#if DEBUG
+    // dear LGG: This isn't actually part of the PR code itself - feel free to cull it out
+    // if/when you merge this.  The reason it's here is that it demonstrates how a Mod could
+    // use the API calls above.
+    //
+    // I also want to use it to demonstrate an issue I'm having with CTB.  This example is a
+    // much simpler stripped down example of the kind of stuff kOS's terminal window does and
+    // it demonstrates something that's making it hard for me to gut kOS's own homemade window
+    // stacking code and put it on top of CTB instead.
+    //
+    // The problem is what happens when two CTB windows have an overlapping section.  When you
+    // click on the area where they overlap (or just hover the mouse on that area if you're in
+    // mousefocus mode) then CTB activates the input locks for *both* of the two windows, not
+    // just the one on top.  (You can look at the Alt-F12 debug menu and see it happening in
+    // the input locks list.) And this means my "focus API" that's in this PR is telling both
+    // the windows that they have focus.
+    //
+    // This becomes relevant with how kOS's terminal uses the focus. It seems like the problem
+    // doesn't affect IMGUI widgets like TextArea - they still seem to be right.  It's just that
+    // kOS is using logic similar to what you see in the example below - OnGUI() says
+    // "if and only if I'm the window with focus, then read the GUI event queue looking for
+    // keypresses."  And that becomes a problem when both windows believe they have focus.  In fact,
+    // in this example it seems to be dispatching the event to the window *underneath* first, which
+    // consumes it so the one on top doesn't see it.
+    [KSPAddon(KSPAddon.Startup.AllGameScenes, false)]
+    public class CTBWindowsTest : MonoBehaviour
+    {
+        void Start()
+        {
+            CTBTestWin win1 = gameObject.AddComponent<CTBTestWin>();
+            win1.title = "Focus Test: Win 1";
+            win1.winRect = new Rect(200, 200, 200, 50);
+            CTBTestWin win2 = gameObject.AddComponent<CTBTestWin>();
+            win2.title = "Focus Test: Win 2";
+            win2.winRect = new Rect(280, 280, 200, 50);
+        }
+    }
+
+    public class CTBTestWin : MonoBehaviour
+    {
+        public string title;
+        public string textContent;
+        public Rect winRect = new Rect(0, 0, 200, 50);
+        static private int winIdCounter = 99900;
+        private int winId;
+        bool myWinHasFocus = false;
+        public void WinFocusChanged(bool focused)
+        {
+            myWinHasFocus = focused;
+        }
+        public void Awake()
+        {
+            winId = ++winIdCounter;
+            ClickThruBlocker.RegisterFocusCallback(winId, WinFocusChanged);
+        }
+        public void OnDispose()
+        {
+            ClickThruBlocker.RemoveFocusCallback(winId, WinFocusChanged);
+        }
+        public void OnGUI()
+        {
+            // A test of what happens when a Mod's window wants to have its own custom
+            // keyboard input, because the pre-canned IMGUI widgets don't quite do what
+            // you need:
+            if (myWinHasFocus)
+            {
+                Event e = Event.current;
+                if (e.type == EventType.KeyDown)
+                {
+                    // Grow the string as you type just to have a simple way to prove
+                    // if it's working or not:
+                    textContent += e.character;
+                    e.Use(); // consume event so no other windows get it.
+                }
+            }
+            else
+            {
+                // Wipe the string when you leave focus, again just to keep the example simple:
+                textContent = "";
+            }
+            winRect = ClickThruBlocker.GUILayoutWindow(winId, winRect, WinFunc, title);
+        }
+        public void WinFunc(int id)
+        {
+            GUILayout.Label(string.Format("(WIN ID {0})", winId));
+            GUILayout.Label(textContent);
+            GUILayout.Label(myWinHasFocus ? "^^^^^^^^^^^^^^^^^^^^^" : "");
+            GUILayout.Label(myWinHasFocus ? "HAS FOCUS. Try typing" : "<<NOT FOCUSED>>");
+            GUI.DragWindow(new Rect(0, 0, 10000, 10000));
+        }
+    }
+#endif
+
 }
