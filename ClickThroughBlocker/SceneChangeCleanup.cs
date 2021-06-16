@@ -6,7 +6,7 @@ using UnityEngine;
 namespace ClearAllInputLocks
 {
     [KSPAddon(KSPAddon.Startup.AllGameScenes, false)]
-        class SceneChangeCleanup : MonoBehaviour
+    class SceneChangeCleanup : MonoBehaviour
     {
         void Start()
         {
@@ -60,13 +60,16 @@ namespace ClearAllInputLocks
         }
 
         bool isRunning = false;
-        IEnumerator  CleanupInputLocks()
+        IEnumerator CleanupInputLocks()
         {
             //Log.Info("CleanUpInputLocks entry");
             isRunning = true;
             yield return new WaitForSeconds(HighLogic.CurrentGame.Parameters.CustomParams<ClickThroughFix.CTB>().cleanupDelay);
-            InputLockManager.ClearControlLocks();
-            yield return null;
+            if (Versioning.version_major == 1 && Versioning.version_minor < 11)
+            {
+                InputLockManager.ClearControlLocks();
+                yield return null;
+            }
             isRunning = false;
             //Log.Info("CleanUpInputLocks exit");
         }

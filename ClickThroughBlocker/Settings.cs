@@ -44,7 +44,14 @@ namespace ClickThroughFix
             toolTip = "Time to wait after scene change before clearing all the input locks")]
         public float cleanupDelay = 0.5f;
 
-        public override bool Enabled(MemberInfo member, GameParameters parameters) { return true; }
+        public override bool Enabled(MemberInfo member, GameParameters parameters) 
+        {
+            if (Versioning.version_major == 1 && Versioning.version_minor >= 11)
+            {
+                return member.Name != "cleanupDelay";
+            }
+                return true; 
+        }
 
         bool? oldFocusFollowsClick;
         

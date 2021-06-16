@@ -1,5 +1,8 @@
 ChangeLog
 
+0.1.10.16
+	Fixed issue on 1.11 where a uncontrolled ship would be controllable when changing scenes to it
+
 0.1.10.15
 	Fixed issue in editor where a single open window which was closed was leaving everything locked.
 
