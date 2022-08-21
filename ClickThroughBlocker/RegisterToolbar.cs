@@ -13,6 +13,7 @@ namespace ClickThroughFix
             ToolbarControl.RegisterMod(ClearInputLocks.MODID2, ClearInputLocks.MODNAME2);
             GameEvents.onGameNewStart.Add(OnGameNewStart);
             GameEvents.onGameStateCreated.Add(OnGameStateCreated);
+            DontDestroyOnLoad(this);
         }
 
         void OnGameNewStart()

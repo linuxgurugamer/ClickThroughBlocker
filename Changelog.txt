@@ -1,5 +1,8 @@
 ChangeLog
 
+0.1.10.18 (unreleased)
+	Fixed a memory leak where two game events were beging  used, added a DontDestroyOnLoad to RegisterToolbar
+
 0.1.10.17
 	Added AssemblyFileVersion
 	Added InstallChecker
