@@ -1,7 +1,7 @@
 ChangeLog
 
-2.1.10.18 (unreleased)
-	Fixed a memory leak where two game events were beging  used, added a DontDestroyOnLoad to RegisterToolbar
+2.1.10.18 
+	Fixed a memory leak where two game events were beiing  used, added a DontDestroyOnLoad to RegisterToolbar
 	Updated version number to avoid dependency issues
 
 0.1.10.17
