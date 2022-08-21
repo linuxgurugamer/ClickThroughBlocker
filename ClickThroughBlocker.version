@@ -7,7 +7,7 @@
     "REPOSITORY": "ClickThroughBlocker"
   },
   "VERSION": {
-    "MAJOR": 0,
+    "MAJOR": 2,
     "MINOR": 1,
     "PATCH": 10,
     "BUILD": 17
