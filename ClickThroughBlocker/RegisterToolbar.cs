@@ -13,12 +13,18 @@ namespace ClickThroughFix
             ToolbarControl.RegisterMod(ClearInputLocks.MODID2, ClearInputLocks.MODNAME2);
             GameEvents.onGameNewStart.Add(OnGameNewStart);
             GameEvents.onGameStateCreated.Add(OnGameStateCreated);
+            GameEvents.OnGameSettingsWritten.Add(OnGameSettingsWritten);
             DontDestroyOnLoad(this);
+        }
+        void OnGameSettingsWritten()
+        {
+            if (HighLogic.CurrentGame.Parameters.CustomParams<CTB>().global)
+                OneTimePopup.SaveGlobalDefault (HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick);
         }
 
         void OnGameNewStart()
         {
-            bool b = false ;
+            bool b = false;
             if (OneTimePopup.GetGlobalDefault(ref b))
             {
                 HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick = b;

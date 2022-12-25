@@ -99,3 +99,4 @@
 
  [assembly: AssemblyVersion("<#= major #>.<#= minor #>.<#= patch #>.<#= build #>")]
  [assembly: AssemblyFileVersion("<#= major #>.<#= minor #>.<#= patch #>.<#= build #>")]
+ [assembly: KSPAssembly("ClickThroughBlocker", <#= major #>, <#= minor #>, 0)]

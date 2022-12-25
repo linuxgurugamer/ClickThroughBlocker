@@ -108,7 +108,7 @@ namespace ClickThroughFix
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Save as global default for all new saves"))
             {
-                SaveGlobalDefault();
+                SaveGlobalDefault(focusFollowsClick);
             }
             if (GUILayout.Button("Accept"))
             {
@@ -140,21 +140,27 @@ namespace ClickThroughFix
                 return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/../Global.cfg";
             }
         }
-        void SaveGlobalDefault()
+        static internal void SaveGlobalDefault(bool focusFollowsClick)
         {
             ConfigNode node = new ConfigNode();
             node.AddValue("focusFollowsClick", focusFollowsClick);
             node.Save(GlobalDefaultFile);
         }
+
         static internal bool GetGlobalDefault(ref bool b)
         {
             if (System.IO.File.Exists(GlobalDefaultFile))
             {
-                ConfigNode node = ConfigNode.Load(GlobalDefaultFile);
-                if (node.TryGetValue("focusFollowsClick", ref b))
+                if (HighLogic.CurrentGame.Parameters.CustomParams<CTB>().global)
                 {
-                    return true;
+                    ConfigNode node = ConfigNode.Load(GlobalDefaultFile);
+                    if (node.TryGetValue("focusFollowsClick", ref b))
+                    {
+                        return true;
+                    }
                 }
+                else
+                    return HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick;
             }
             return false;
         }

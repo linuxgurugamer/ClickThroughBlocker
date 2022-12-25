@@ -5,5 +5,6 @@
   
  using System.Reflection;
 
- [assembly: AssemblyVersion("1.1.10.17")]
- [assembly: AssemblyFileVersion("1.1.10.17")]
+ [assembly: AssemblyVersion("2.1.10.18")]
+ [assembly: AssemblyFileVersion("2.1.10.18")]
+ [assembly: KSPAssembly("ClickThroughBlocker", 2, 1, 0)]
