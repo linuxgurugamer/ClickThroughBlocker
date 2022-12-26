@@ -151,7 +151,7 @@ namespace ClickThroughFix
         {
             if (System.IO.File.Exists(GlobalDefaultFile))
             {
-                if (HighLogic.CurrentGame.Parameters.CustomParams<CTB>().global)
+                if (HighLogic.CurrentGame == null || HighLogic.CurrentGame.Parameters.CustomParams<CTB>().global)
                 {
                     ConfigNode node = ConfigNode.Load(GlobalDefaultFile);
                     if (node.TryGetValue("focusFollowsClick", ref b))

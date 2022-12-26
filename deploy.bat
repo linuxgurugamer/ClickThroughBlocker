@@ -9,7 +9,7 @@ rem    but not always
 
 set H=%KSPDIR%
 
-set H=R:\KSP_1.12.4
+rem set H=R:\KSP_1.12.4
 
 set GAMEDIR=000_ClickThroughBlocker
 set GAMEDATA=GameData

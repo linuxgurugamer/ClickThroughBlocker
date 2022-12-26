@@ -1,5 +1,8 @@
 ChangeLog
 
+2.1.10.20
+	Fixed nullref when entering game
+
 2.1.10.19
 	Fixed issue where changing the FocusFollowsClick in the settings wasn't being saved properly
 	Fixed issue where changing the global setting in the settings wasn't being honored
