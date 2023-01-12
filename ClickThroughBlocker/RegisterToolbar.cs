@@ -18,7 +18,7 @@ namespace ClickThroughFix
         }
         void OnGameSettingsWritten()
         {
-            if (HighLogic.CurrentGame.Parameters.CustomParams<CTB>().global)
+            if (HighLogic.CurrentGame != null && HighLogic.CurrentGame.Parameters.CustomParams<CTB>().global)
                 OneTimePopup.SaveGlobalDefault (HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick);
         }
 
