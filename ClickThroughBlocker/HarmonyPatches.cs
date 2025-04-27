@@ -47,12 +47,6 @@ namespace ClickThroughFix
         // so a click meant for the mod window doesn't also grab a part in the editor.
         internal void Update()
         {
-            // Sync the static enable flag from the per-save CTB settings each frame so
-            // toggling the option in the stock settings UI takes effect immediately.
-            if (HighLogic.CurrentGame != null)
-                ClearInputLocks.universalClickBlocking =
-                    HighLogic.CurrentGame.Parameters.CustomParams<CTB>().universalClickBlocking;
-
             bool over = ClearInputLocks.universalClickBlocking && IMGUIWindowTracker.MouseOverAnyWindow();
             bool wantEditor = over && HighLogic.LoadedSceneIsEditor && EditorLogic.fetch != null;
             bool wantFlight = over && (HighLogic.LoadedSceneIsFlight || HighLogic.LoadedSceneHasPlanetarium);
