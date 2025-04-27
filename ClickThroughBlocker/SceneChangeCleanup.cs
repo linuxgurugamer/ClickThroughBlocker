@@ -64,7 +64,7 @@ namespace ClearAllInputLocks
         {
             //Log.Info("CleanUpInputLocks entry");
             isRunning = true;
-            yield return new WaitForSeconds(HighLogic.CurrentGame.Parameters.CustomParams<ClickThroughFix.CTB>().cleanupDelay);
+            yield return new WaitForSeconds(Settings.cleanupDelay);
             if (Versioning.version_major == 1 && Versioning.version_minor < 11)
             {
                 InputLockManager.ClearControlLocks();
