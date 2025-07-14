@@ -38,3 +38,4 @@ using System.Runtime.InteropServices;
 //[assembly: AssemblyVersion("0.1.7.0")]
 //[assembly: KSPAssembly("ClickThroughBlocker", 1, 8, 0)]
 
+[assembly: KSPAssemblyDependency("HarmonyKSP", 1, 0)]
