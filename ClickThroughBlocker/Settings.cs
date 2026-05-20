@@ -34,6 +34,10 @@ namespace ClickThroughFix
             toolTip = "Click on a window to move the  focus to it")]
         public bool focusFollowsclick = false;
 
+        [GameParameters.CustomParameterUI("Universal IMGUI click-through blocking",
+            toolTip = "Block clicks / mouse wheel / editor part-pick from passing through\nANY IMGUI mod window onto PAW, the uGUI EventSystem, or KSP's\neditor — even mods that haven't opted in via ClickThruBlocker.GUILayoutWindow.")]
+        public bool universalClickBlocking = false;
+
 
         [GameParameters.CustomParameterUI("Focus change is global",
          toolTip = "This will make it a global setting for all games")]

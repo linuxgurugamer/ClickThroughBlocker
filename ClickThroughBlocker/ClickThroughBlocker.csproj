@@ -59,6 +59,7 @@
     <Compile Include="ClickThroughBlocker.cs" />
     <Compile Include="FocusLock.cs" />
     <Compile Include="GlobalFlagStorage.cs" />
+    <Compile Include="HarmonyPatches.cs" />
     <Compile Include="InstallChecker.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="OneTimePopup.cs" />
@@ -84,6 +85,10 @@
     <Reference Include="System" />
     <Reference Include="ToolbarControl">
       <HintPath>$(KSPDIR)\GameData\001_ToolbarControl\Plugins\ToolbarControl.dll</HintPath>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(KSPDIR)\GameData\000_Harmony\0Harmony.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
