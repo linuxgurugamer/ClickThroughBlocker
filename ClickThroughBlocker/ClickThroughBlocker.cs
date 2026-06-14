@@ -222,7 +222,7 @@ namespace ClickThroughFix
             }
         }
 #endif
-        // This is outside the UpdateList method for runtime optimization 
+        // This is outside the UpdateList method for runtime optimization
         static CTBWin win = null;
         private static Rect UpdateList(int id, Rect rect, string text)
         {
@@ -246,6 +246,20 @@ namespace ClickThroughFix
 
 #endif
             return rect;
+        }
+
+        // Returns true when the cursor is over any IMGUI window drawn this frame.
+        // The set of rects is populated from Harmony postfixes on every
+        // GUILayout.Window / GUI.Window overload (see HarmonyPatches.cs), so this
+        // covers both CTB-wrapped windows and plain mod windows that haven't adopted
+        // CTB (MechJeb, etc.). Used by the click-blocking Harmony patches.
+        public static bool MouseOverAnyWindow()
+        {
+#if DUMMY
+            return false;
+#else
+            return IMGUIWindowTracker.MouseOverAnyWindow();
+#endif
         }
 
         // This is outside all the GuiLayoutWindow methods for runtime optimization

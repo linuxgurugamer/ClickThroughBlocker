@@ -19,6 +19,7 @@ namespace ClickThroughFix
         static internal ToolbarControl toolbarControl = null;
         static internal ToolbarControl clickThroughToggleControl = null;
         static internal bool focusFollowsclick = false;
+        static internal bool universalClickBlocking = false;
 
         const string FFC_38 = "000_ClickThroughBlocker/PluginData/FFC-38";
         const string FFM_38 = "000_ClickThroughBlocker/PluginData/FFM-38";

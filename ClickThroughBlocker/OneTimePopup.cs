@@ -13,7 +13,7 @@ namespace ClickThroughFix
     {
         internal static OneTimePopup Instance = null;
         const int WIDTH = 600;
-        const int HEIGHT = 350;
+        const int HEIGHT = 400;
         Rect popupRect = new Rect(300, 50, WIDTH, HEIGHT);
         bool visible = false;
         static string popUpShownCfgPath { get { 
@@ -41,6 +41,7 @@ namespace ClickThroughFix
         {
 
             visible = true;
+            universalClickBlocking = HighLogic.CurrentGame.Parameters.CustomParams<CTB>().universalClickBlocking;
             if (ClearInputLocks.modeWindow != null)
             {
                 visible = true;
@@ -78,6 +79,7 @@ namespace ClickThroughFix
         bool focusFollowsClick = false;
         bool oldFocusFollowsMouse = false;
         bool oldFocusFollowsClick = false;
+        bool universalClickBlocking = false;
         void PopUpWindow(int id)
         {
             GUILayout.BeginVertical();
@@ -103,16 +105,21 @@ namespace ClickThroughFix
                 oldFocusFollowsClick = true;
                 focusFollowsMouse = oldFocusFollowsMouse = false;
             }
+            GUILayout.Space(10);
+            universalClickBlocking = GUILayout.Toggle(universalClickBlocking,
+                "Universal IMGUI click-through blocking (covers mods that don't use CTB)");
             if (!focusFollowsClick && !focusFollowsMouse)
                 GUI.enabled = false;
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Save as global default for all new saves"))
             {
-                SaveGlobalDefault(focusFollowsClick);
+                SaveGlobalDefault(focusFollowsClick, universalClickBlocking);
             }
             if (GUILayout.Button("Accept"))
             {
                 HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick = focusFollowsClick;
+                HighLogic.CurrentGame.Parameters.CustomParams<CTB>().universalClickBlocking = universalClickBlocking;
+                ClearInputLocks.universalClickBlocking = universalClickBlocking;
                 HighLogic.CurrentGame.Parameters.CustomParams<CTB>().showPopup = false;
                 CreatePopUpFlagFile();
                 ClearInputLocks.ClearInputLocksToggle();
@@ -140,10 +147,11 @@ namespace ClickThroughFix
                 return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/../Global.cfg";
             }
         }
-        static internal void SaveGlobalDefault(bool focusFollowsClick)
+        static internal void SaveGlobalDefault(bool focusFollowsClick, bool universalClickBlocking)
         {
             ConfigNode node = new ConfigNode();
             node.AddValue("focusFollowsClick", focusFollowsClick);
+            node.AddValue("universalClickBlocking", universalClickBlocking);
             node.Save(GlobalDefaultFile);
         }
 
@@ -161,6 +169,20 @@ namespace ClickThroughFix
                 }
                 else
                     return HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick;
+            }
+            return false;
+        }
+
+        static internal bool GetGlobalDefaultUniversal(ref bool b)
+        {
+            if (System.IO.File.Exists(GlobalDefaultFile))
+            {
+                if (HighLogic.CurrentGame == null || HighLogic.CurrentGame.Parameters.CustomParams<CTB>().global)
+                {
+                    ConfigNode node = ConfigNode.Load(GlobalDefaultFile);
+                    if (node.TryGetValue("universalClickBlocking", ref b))
+                        return true;
+                }
             }
             return false;
         }

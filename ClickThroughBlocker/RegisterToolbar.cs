@@ -19,7 +19,9 @@ namespace ClickThroughFix
         void OnGameSettingsWritten()
         {
             if (HighLogic.CurrentGame != null && HighLogic.CurrentGame.Parameters.CustomParams<CTB>().global)
-                OneTimePopup.SaveGlobalDefault (HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick);
+                OneTimePopup.SaveGlobalDefault(
+                    HighLogic.CurrentGame.Parameters.CustomParams<CTB>().focusFollowsclick,
+                    HighLogic.CurrentGame.Parameters.CustomParams<CTB>().universalClickBlocking);
         }
 
         void OnGameNewStart()
@@ -31,6 +33,9 @@ namespace ClickThroughFix
                 HighLogic.CurrentGame.Parameters.CustomParams<CTB>().showPopup = false;
                 OneTimePopup.CreatePopUpFlagFile();
             }
+            bool u = false;
+            if (OneTimePopup.GetGlobalDefaultUniversal(ref u))
+                HighLogic.CurrentGame.Parameters.CustomParams<CTB>().universalClickBlocking = u;
         }
         void OnGameStateCreated(Game g)
         {
@@ -41,6 +46,9 @@ namespace ClickThroughFix
                 g.Parameters.CustomParams<CTB>().showPopup = false;
                 OneTimePopup.CreatePopUpFlagFile();
             }
+            bool u = false;
+            if (OneTimePopup.GetGlobalDefaultUniversal(ref u))
+                g.Parameters.CustomParams<CTB>().universalClickBlocking = u;
         }
     }
 }
