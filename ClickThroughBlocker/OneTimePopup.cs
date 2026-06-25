@@ -147,8 +147,21 @@ namespace ClickThroughFix
                 return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/../Global.cfg";
             }
         }
+
         static internal void SaveGlobalDefault(bool focusFollowsClick, bool universalClickBlocking)
         {
+            if (System.IO.File.Exists(GlobalDefaultFile))
+            {
+                ConfigNode currentNode = ConfigNode.Load(GlobalDefaultFile);
+                bool ffb = false, ucb = false;
+                if (currentNode.TryGetValue("focusFollowsClick", ref ffb) &&
+                    currentNode.TryGetValue("universalClickBlocking", ref ucb))
+                {
+                    if (ffb == focusFollowsClick && ucb == universalClickBlocking)
+                        return;
+                }
+            }
+
             ConfigNode node = new ConfigNode();
             node.AddValue("focusFollowsClick", focusFollowsClick);
             node.AddValue("universalClickBlocking", universalClickBlocking);
