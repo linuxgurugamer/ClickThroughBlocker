@@ -1,16 +1,24 @@
 ChangeLog
 
-2.1.20.23 
+3.0.0.0
+	Settings moved from the stock difficulty screen to the pause menu (Gameplay settings), and are now always global
+	Removed the toolbar buttons and the one-time popup
+	Universal click-through block is now an option in the pause menu settings
+	Fixed the cleanup delay setting being loaded incorrectly
+	Added a Harmony assembly dependency
+	Modernised the build (SDK-style project, KSPBuildTools)
+
+2.1.10.23 
 	Thanks to github user @chambm for this amazing patch:
 		Universal click-through block for IMGUI windows on PAW / uGUI
 		Only works if Harmony is installed
 	Added a check to prevent the global.cfg from begin rewritten every time game settings change
 
-2.1.20.22
+2.1.10.22
 	Updated version file to use github for version info
 	Copied webpage to README.md
 
-2.1.20.21
+2.1.10.21
 	Fixed another nullref when starting game
 
 2.1.10.20
