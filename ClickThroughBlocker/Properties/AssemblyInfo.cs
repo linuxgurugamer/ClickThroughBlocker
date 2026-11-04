@@ -11,6 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("ClickThroughBlocker")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
+[assembly: KSPAssemblyDependency("ToolbarController", 1, 0, 1)]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
