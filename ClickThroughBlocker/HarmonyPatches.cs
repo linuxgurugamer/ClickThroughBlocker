@@ -47,13 +47,7 @@ namespace ClickThroughFix
         // so a click meant for the mod window doesn't also grab a part in the editor.
         internal void Update()
         {
-            // Sync the static enable flag from the per-save CTB settings each frame so
-            // toggling the option in the stock settings UI takes effect immediately.
-            if (HighLogic.CurrentGame != null)
-                ClearInputLocks.universalClickBlocking =
-                    HighLogic.CurrentGame.Parameters.CustomParams<CTB>().universalClickBlocking;
-
-            bool over = ClearInputLocks.universalClickBlocking && IMGUIWindowTracker.MouseOverAnyWindow();
+            bool over = Settings.universalClickBlocking && IMGUIWindowTracker.MouseOverAnyWindow();
             bool wantEditor = over && HighLogic.LoadedSceneIsEditor && EditorLogic.fetch != null;
             bool wantFlight = over && (HighLogic.LoadedSceneIsFlight || HighLogic.LoadedSceneHasPlanetarium);
 
@@ -92,7 +86,7 @@ namespace ClickThroughFix
         // for both kinds of mods.
         public static void RecordScreenSpace(Rect r)
         {
-            if (!ClearInputLocks.universalClickBlocking) return;
+            if (!Settings.universalClickBlocking) return;
             var m = GUI.matrix;
             Vector3 tl = m.MultiplyPoint3x4(new Vector3(r.xMin, r.yMin, 0f));
             Vector3 br = m.MultiplyPoint3x4(new Vector3(r.xMax, r.yMax, 0f));
@@ -106,7 +100,7 @@ namespace ClickThroughFix
 
         public static bool MouseOverAnyWindow()
         {
-            if (!ClearInputLocks.universalClickBlocking) return false;
+            if (!Settings.universalClickBlocking) return false;
             EnsureFrame();
             Vector2 mp = Input.mousePosition;
             mp.y = Screen.height - mp.y;

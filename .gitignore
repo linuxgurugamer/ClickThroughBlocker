@@ -234,3 +234,6 @@ $RECYCLE.BIN/
 *.pdb
 .vs
 .vs/*
+
+# release.ps1 output
+Builds/

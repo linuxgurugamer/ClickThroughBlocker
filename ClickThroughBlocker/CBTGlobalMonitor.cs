@@ -29,7 +29,7 @@ namespace ClickThroughFix
         {
             globalTimeTics++;
 
-            if (ClearInputLocks.focusFollowsclick)
+            if (Settings.focusFollowsclick)
             {
                 foreach (var w in FocusLock.focusLockDict)
                 {
